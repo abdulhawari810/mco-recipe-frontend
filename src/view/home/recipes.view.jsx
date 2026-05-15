@@ -7,6 +7,7 @@ import { getImagePath } from "@/utils/image.utils";
 import { renderIcon } from "@/utils/icons.utils";
 import Modal from "@/components/modal.component";
 import NoDataFound from "@/components/no_data_found.component";
+import CardLoading from "@/components/loading/card.loading";
 
 export default function RecipesView() {
   const [search, setSearch] = useState("");
@@ -44,15 +45,8 @@ export default function RecipesView() {
     setIsModalOpen(false);
   };
 
-  if (loading) {
-    return (
-      <div className="recipe-view">
-        <div className="cards-container mt-5 flex flex-col gap-4">
-          <h1 className="text-black font-bold text-2xl">Loading...</h1>
-        </div>
-      </div>
-    );
-  }
+  const recipeList = recipes?.data;
+  const authors = recipeList?.map((item) => item.recipe);
 
   return (
     <>
@@ -82,39 +76,45 @@ export default function RecipesView() {
         </div>
 
         {/* Card Grid */}
-        {recipes?.data?.length > 0 ? (
-          <div
-            className="columns-2 sm:grid sm:grid-cols-3
-         mt-5 md:grid md:grid-cols-4 lg:grid lg:grid-cols-4 space-y-4 lg:pl-8 sm:pl-4 md:pl-6 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8"
-          >
-            {Array.isArray(recipes?.data) &&
-              recipes?.data.map((item, i) => {
-                return (
-                  <Card
-                    key={item.id}
-                    title={item.title}
-                    description={item.description}
-                    image={
-                      item.image ||
-                      getImagePath(`food/item.image`) ||
-                      getImagePath("food/food1.jpg")
-                    }
-                    profile={item.recipe?.profile}
-                    author={item.recipe?.username}
-                    difficulty={item.difficulty}
-                    time={item.time}
-                    onCardClick={() => nav(`/recipes/detail/${item.id}`)}
-                    onFavouriteClick={(e) => {
-                      e.stopPropagation();
-                      createFavourite(item.id);
-                    }}
-                  />
-                );
-              })}
-          </div>
-        ) : (
-          <NoDataFound error={error} thumbnailClass={"w-40 h-40"} />
-        )}
+        <div
+          className="columns-2
+         mt-5  sm:flex justify-between items-start sm:flex-wrap w-full space-y-4 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8"
+        >
+          {loading && !recipeList ? (
+            Array.from({ length: 12 }).map((_, i) => {
+              return <CardLoading key={i} />;
+            })
+          ) : recipeList.length > 0 ? (
+            recipeList.map((item) => {
+              return (
+                <Card
+                  key={item.id}
+                  title={item.title}
+                  description={item.description}
+                  image={
+                    item.image ||
+                    getImagePath(`food/item.image`) ||
+                    getImagePath("food/food1.jpg")
+                  }
+                  profile={item.recipe?.profile}
+                  author={item.recipe?.username}
+                  difficulty={item.difficulty}
+                  time={item.time}
+                  category={item.category?.name}
+                  onCardClick={() => nav(`/recipes/detail/${item.id}`)}
+                  onFavouriteClick={(e) => {
+                    e.stopPropagation();
+                    createFavourite(item.id);
+                  }}
+                />
+              );
+            })
+          ) : (
+            <h1 className="text-2xl font-bold text-black">
+              Data tidak ditemukan
+            </h1>
+          )}
+        </div>
 
         {/* Pagination */}
         {recipes?.data?.length > 0 && recipes?.totalPage > 1 && (

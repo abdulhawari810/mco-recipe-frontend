@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFavourite } from "@/services/favourite.services";
 import { toast } from "react-hot-toast";
+import { favouriteKeys } from "@/utils/queryKeys";
 
 export const useCreateFavourite = () => {
   const queryClient = useQueryClient();
 
   const {
-    mutate: createFavouriteMutate,
+    mutateAsync: createFavouriteMutate,
     isPending,
     error,
   } = useMutation({
@@ -14,7 +15,7 @@ export const useCreateFavourite = () => {
 
     onSuccess: (res) => {
       toast.success(res?.data?.message || "resep berhasil disimpan");
-      queryClient.invalidateQueries({ queryKey: ["favourites"] });
+      queryClient.invalidateQueries({ queryKey: favouriteKeys.all() });
     },
 
     onError: (error) => {
@@ -24,7 +25,7 @@ export const useCreateFavourite = () => {
 
   return {
     createFavourite: createFavouriteMutate,
-    loading: isPending,
+    loadingCreateFavourite: isPending,
     error,
   };
 };

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllCategories } from "@/services/categories.services";
+import { categoriesKeys } from "@/utils/queryKeys";
 
 export const useAllCategories = () => {
   // 🔹 GET ALL RECIPES
@@ -9,7 +10,7 @@ export const useAllCategories = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["categories"],
+    queryKey: categoriesKeys.all(),
     queryFn: () => getAllCategories(),
     staleTime: 1000 * 60 * 5, // 5 menit
     cacheTime: 1000 * 60 * 10,
@@ -18,7 +19,7 @@ export const useAllCategories = () => {
 
   return {
     categories: categoriesData?.data?.data || [],
-    loading: isLoading,
+    loadingCategories: isLoading,
     error,
     refetch,
   };

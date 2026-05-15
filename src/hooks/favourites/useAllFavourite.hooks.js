@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllFavourite } from "@/services/favourite.services";
+import { favouriteKeys } from "@/utils/queryKeys";
 
 export const useAllFavourite = () => {
   // 🔹 GET ALL RECIPES
@@ -9,13 +10,13 @@ export const useAllFavourite = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["favourites"],
+    queryKey: favouriteKeys.all(),
     queryFn: () => getAllFavourite(),
   });
 
   return {
     favourites: favouriteData?.data?.data || [],
-    loading: isLoading,
+    loadingFavourite: isLoading,
     error,
     refetch,
   };

@@ -1,6 +1,7 @@
 import { useAuth } from "@/hooks/auth/useAuth.hooks";
 import { useAllFavourite } from "@/hooks/favourites/useAllFavourite.hooks";
 import { useState, useEffect } from "react";
+import { getImagePath } from "@/utils/image.utils";
 
 export default function Footer() {
   const { me, logout } = useAuth();
@@ -22,10 +23,10 @@ export default function Footer() {
         {/* Brand Section */}
         <div className="space-y-4">
           <div>
-            <h2 className="text-2xl font-bold tracking-wide text-orange-500">
-              MCO
-            </h2>
-            <p className="text-sm text-slate-400 mt-1">Morphy Cook Official</p>
+            <img
+              src={getImagePath("resource/branding1.png")}
+              className="lg:w-50 lg:h-30 object-cover"
+            />
           </div>
 
           <p className="text-sm leading-relaxed text-slate-400">

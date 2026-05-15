@@ -55,9 +55,9 @@ export default function ProfileMenu({
           </div>
 
           <ul className="mt-2 space-y-1 text-sm">
-            <NavLink to={"/"}>
+            <NavLink to={"/Profile"}>
               <li className="w-full cursor-pointer text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition">
-                Edit Profile
+                Profile
               </li>
             </NavLink>
             {role === "chief" && (
@@ -74,7 +74,7 @@ export default function ProfileMenu({
                 </li>
               </NavLink>
             )}
-            <NavLink to={"/"}>
+            <NavLink to={"/Settings"}>
               <li className="w-full cursor-pointer text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition">
                 Settings
               </li>

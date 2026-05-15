@@ -7,7 +7,7 @@ export const useUpdateRecipes = () => {
   const queryClient = useQueryClient();
 
   const {
-    mutate: updateRecipes,
+    mutateAsync: updateRecipes,
     isPending,
     error,
   } = useMutation({
@@ -24,7 +24,7 @@ export const useUpdateRecipes = () => {
 
   return {
     updateRecipes,
-    loading: isPending,
+    loadingUpdateRecipes: isPending,
     error,
   };
 };

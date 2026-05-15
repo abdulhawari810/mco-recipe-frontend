@@ -17,7 +17,7 @@ export const useCountAllRecipes = () => {
 
   return {
     countAll: countData?.data?.data || { draft: 0, accept: 0, reject: 0 },
-    loading: isLoading,
+    loadingCountAllRecipes: isLoading,
     error,
     refetch,
   };

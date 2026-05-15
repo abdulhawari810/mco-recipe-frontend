@@ -25,7 +25,7 @@ export const useRegister = () => {
 
   return {
     registerUsers,
-    loading: isPending,
+    loadingRegister: isPending,
     error,
   };
 };

@@ -23,7 +23,7 @@ export const useAllUsers = ({ search, sort, filter } = {}) => {
 
   return {
     users,
-    loading: isLoading,
+    loadingUsers: isLoading,
     error: usersData?.data?.message || error?.message || null,
     refetch,
   };

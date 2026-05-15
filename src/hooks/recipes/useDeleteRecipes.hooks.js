@@ -21,6 +21,6 @@ export const useDeleteRecipes = () => {
 
   return {
     deleteRecipes: mutation.mutate,
-    loading: mutation.isPending,
+    loadingDeleteRecipes: mutation.isPending,
   };
 };

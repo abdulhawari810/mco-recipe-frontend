@@ -3,7 +3,6 @@ import { me, logoutUser } from "@/services/auth.services";
 import { AuthKeys } from "@/utils/queryKeys";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { success } from "./../../../../backend/utils/response.utils";
 
 export const useAuth = (query) => {
   const nav = useNavigate();
@@ -24,7 +23,7 @@ export const useAuth = (query) => {
   });
 
   // 🔹 LOGOUT
-  const { mutateAsync: logout, isPending: logoutLoading } = useMutation({
+  const { mutateAsync: logout, isPending: LoadingLogout } = useMutation({
     mutationFn: logoutUser,
 
     onSuccess: (msg) => {
@@ -36,7 +35,7 @@ export const useAuth = (query) => {
       // optional: hapus semua cache
       queryClient.clear();
 
-      toast.success(msg?.response?.data?.message || "Logged out successfully");
+      toast.success(msg?.response?.data?.message || "Logout Berhasil");
     },
 
     onError: (error) => {
@@ -48,7 +47,7 @@ export const useAuth = (query) => {
 
   return {
     me: userData?.data?.data || null,
-    loading: isLoading || logoutLoading,
+    loadingMe: isLoading || LoadingLogout,
     error: error?.response?.data?.message || error?.message || null,
     refetch,
     logout,

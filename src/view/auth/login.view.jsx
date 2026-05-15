@@ -28,7 +28,7 @@ export default function LoginView() {
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-blue-600 mb-2 text-center">
+        <h1 className="text-3xl font-bold text-orange-600 cursor-pointer mb-2 text-center">
           Welcome
         </h1>
         <p className="text-gray-600 text-center mb-8">
@@ -46,7 +46,7 @@ export default function LoginView() {
                 setFormData({ ...formData, UsersOrEmail: e.target.value })
               }
               placeholder="Enter your email or username"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 cursor-pointer focus:border-transparent outline-none transition"
             />
           </div>
 
@@ -60,7 +60,7 @@ export default function LoginView() {
                 setFormData({ ...formData, password: e.target.value })
               }
               placeholder="Enter your password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 cursor-pointer focus:border-transparent outline-none transition"
             />
             <div>
               {renderIcon("Eye", {
@@ -126,7 +126,10 @@ export default function LoginView() {
 
         <p className="text-center text-gray-600 text-sm mt-6">
           Don't have an account?{" "}
-          <a href="/register" className="text-blue-600 hover:underline">
+          <a
+            href="/register"
+            className="text-orange-600 cursor-pointer hover:underline"
+          >
             Sign up
           </a>
         </p>

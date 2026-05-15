@@ -7,7 +7,7 @@ export const useUpdateStatusRecipes = () => {
   const queryClient = useQueryClient();
 
   const {
-    mutate: updateStatusRecipe,
+    mutateAsync: updateStatusRecipe,
     isPending,
     error,
   } = useMutation({
@@ -26,7 +26,7 @@ export const useUpdateStatusRecipes = () => {
 
   return {
     updateStatusRecipe,
-    loading: isPending,
+    loadingUpdateStatus: isPending,
     error,
   };
 };

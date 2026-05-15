@@ -34,7 +34,7 @@ export const useRecipesByAuthor = ({
 
   return {
     recipesByAuthor: recipesData?.data?.data || [],
-    loading: isLoading,
+    loadingRecipesAuthor: isLoading,
     error,
     refetch,
   };

@@ -24,7 +24,7 @@ export const useAllRecipesForAdmin = ({ search, status, page } = {}) => {
 
   return {
     recipesAdmin: recipesData?.data?.data || [],
-    loading: isLoading,
+    loadingRecipesAdmin: isLoading,
     error,
     refetch,
   };

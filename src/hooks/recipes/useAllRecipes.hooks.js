@@ -32,7 +32,7 @@ export const useAllRecipes = ({
 
   return {
     recipes: recipesData?.data?.data || [],
-    loading: isLoading,
+    loadingRecipes: isLoading,
     error: recipesData?.data?.message,
     refetch,
   };

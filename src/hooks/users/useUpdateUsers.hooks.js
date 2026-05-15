@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserById } from "@/services/users.services";
 import { toast } from "react-hot-toast";
+import { usersKeys } from "@/utils/queryKeys";
 
 export const useUpdateUsers = () => {
   const queryClient = useQueryClient();
 
   const {
-    mutate: updateUsers,
+    mutateAsync: updateUsers,
     isPending,
     error,
   } = useMutation({
@@ -14,10 +15,7 @@ export const useUpdateUsers = () => {
     onSuccess: (res) => {
       toast.success(res?.data?.message || "user berhasil diupdate");
       queryClient.invalidateQueries({
-        queryKey: ["users"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["auth-users"],
+        queryKey: usersKeys.all(),
       });
     },
 
@@ -28,7 +26,7 @@ export const useUpdateUsers = () => {
 
   return {
     updateUsers,
-    loading: isPending,
+    loadingUpdateUsers: isPending,
     error,
   };
 };

@@ -7,7 +7,7 @@ export const useCreateRecipes = () => {
   const queryClient = useQueryClient();
 
   const {
-    mutate: createRecipeMutate,
+    mutateAsync: createRecipeMutate,
     isPending,
     error,
   } = useMutation({

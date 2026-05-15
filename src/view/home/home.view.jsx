@@ -6,6 +6,7 @@ import { useCreateFavourite } from "@/hooks/favourites/useCreateFavourite.hooks"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
+import CardLoading from "@/components/loading/card.loading";
 
 export default function HomeView() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -63,27 +64,15 @@ export default function HomeView() {
           </h1>
         )}
 
+        {/* card */}
+
         <div
           className="columns-2
          mt-5  sm:flex justify-between items-start sm:flex-wrap w-full space-y-4 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8"
         >
           {loading && !recipeList ? (
             Array.from({ length: 12 }).map((_, i) => {
-              return (
-                <div
-                  className="flex flex-col w-40 sm:w-44 md:w-40 lg:w-72"
-                  key={i}
-                >
-                  <Skeleton className="w-full h-32 rounded-t-2xl sm:h-44 md:h-44" />
-                  <Skeleton className="w-20 md:w-40 h-3 mt-2 rounded-sm sm:h-3 md:h-4" />
-                  <Skeleton className="w-40 md:w-60 h-3 mt-2 rounded-sm sm:h-3 md:h-4" />
-                  <Skeleton className="w-40 md:w-72 h-3 mt-2 rounded-sm sm:h-3 md:h-4" />
-                  <div className="flex items-center justify-center gap-4">
-                    <Skeleton className="w-40 h-3 mt-2 rounded-sm sm:h-3 md:h-10" />
-                    <Skeleton className="w-40 h-3 mt-2 rounded-sm sm:h-3 md:h-10" />
-                  </div>
-                </div>
-              );
+              return <CardLoading key={i} />;
             })
           ) : recipeList.length > 0 ? (
             recipeList.map((item) => {
@@ -116,6 +105,7 @@ export default function HomeView() {
             </h1>
           )}
         </div>
+
         {/* Pagination */}
         {recipes.totalPage > 1 && (
           <div className="flex justify-center mt-6 gap-2">

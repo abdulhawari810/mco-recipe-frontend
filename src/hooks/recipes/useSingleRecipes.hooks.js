@@ -11,7 +11,7 @@ export const useSingleRecipes = (id) => {
 
   return {
     recipe: data?.data?.data,
-    loading: isLoading,
+    loadingSingleRecipes: isLoading,
     error,
   };
 };

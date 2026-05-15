@@ -22,7 +22,7 @@ export const useCountRecipesByAuthor = () => {
       accept: 0,
       reject: 0,
     },
-    loading: isLoading,
+    loadingCountRecipes: isLoading,
     error,
     refetch,
   };

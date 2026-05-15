@@ -25,7 +25,7 @@ export const useLogin = () => {
 
   return {
     loginUsers,
-    loading: isPending,
+    loadingLogin: isPending,
     error,
   };
 };
