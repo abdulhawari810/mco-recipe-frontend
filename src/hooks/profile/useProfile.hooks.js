@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "@/services/profile.services";
 import { profileKeys } from "@/utils/queryKeys";
 
-export const getProfiles = () => {
+export const useProfile = () => {
   // 🔹 GET ALL RECIPES
   const {
     data: profileData,

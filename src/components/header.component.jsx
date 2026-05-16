@@ -9,6 +9,7 @@ export default function Header({
   filterValue,
   onFilterChange,
   onFilterChangeFinal,
+  loading,
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -105,12 +106,15 @@ export default function Header({
               <input
                 type="text"
                 placeholder="Search recipes..."
+                className="w-80 sm:w-[25rem] md:w-[30rem] lg:w-[35rem] h-14 rounded-full bg-white shadow-md outline-none p-4 text-md pr-25"
                 value={value}
                 onChange={onChange}
-                className="w-full h-full px-4 py-2 pl-12 rounded-lg bg-white outline-2 outline-gray-300 focus:outline-orange-500 transition"
               />
+              {loading && (
+                <span className="absolute right-23 animate-spin border-3 border-t-transparent w-5 h-5 rounded-full border-orange-500"></span>
+              )}
               {renderIcon("Search", {
-                className: "absolute left-4 w-6 h-6 text-gray-900",
+                className: "absolute right-12 w-6 h-6 text-gray-900",
               })}
             </div>
             <div

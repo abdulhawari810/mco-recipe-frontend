@@ -14,7 +14,8 @@ export default function HomeView() {
   const [filter, setFilters] = useState({});
   const [filterdebounced, setFilterDebounced] = useState({});
   const [page, setPage] = useState(1);
-  const { recipes, loading } = useAllRecipes({
+  const [LoadingSearch, setLoadingSearch] = useState(false);
+  const { recipes, loadingRecipes } = useAllRecipes({
     query: debouncedSearchTerm,
     category: filterdebounced.category,
     difficulty: filterdebounced.difficulty,
@@ -25,12 +26,24 @@ export default function HomeView() {
   const nav = useNavigate();
 
   useEffect(() => {
+    if (!searchTerm.trim()) {
+      setLoadingSearch(false);
+      setDebouncedSearchTerm("");
+      return;
+    }
+    setLoadingSearch(true);
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
     }, 500);
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
+
+  useEffect(() => {
+    if (!loadingRecipes) {
+      setLoadingSearch(false);
+    }
+  }, [loadingRecipes]);
 
   const handlefilterChange = (newFilter) => {
     setFilters(newFilter);
@@ -41,22 +54,17 @@ export default function HomeView() {
 
   return (
     <div className="home-view">
-      {loading ? (
-        <div className="flex flex-col w-full h-72  md:h-80 lg:h-96 p-4">
-          <Skeleton className="h-full rounded-2xl w-full" />
-        </div>
-      ) : (
-        <Header
-          onChange={(e) => setSearchTerm(e.target.value)}
-          value={searchTerm}
-          filterValue={filter}
-          onFilterChange={(newFilter) => setFilters(newFilter)}
-          onFilterChangeFinal={(finalFilter) => setFilterDebounced(finalFilter)}
-        />
-      )}
+      <Header
+        onChange={(e) => setSearchTerm(e.target.value)}
+        value={searchTerm}
+        filterValue={filter}
+        onFilterChange={(newFilter) => setFilters(newFilter)}
+        loading={LoadingSearch}
+        onFilterChangeFinal={(finalFilter) => setFilterDebounced(finalFilter)}
+      />
 
       <div className="cards-container bg-white rounded-2xl mt-5 flex flex-col p-4 gap-4">
-        {loading ? (
+        {loadingRecipes ? (
           <Skeleton className="w-64 h-6" />
         ) : (
           <h1 className="text-black font-bold text-xl md:text-2xl">
@@ -68,14 +76,14 @@ export default function HomeView() {
 
         <div
           className="columns-2
-         mt-5  sm:flex justify-between items-start sm:flex-wrap w-full space-y-4 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8"
+         mt-5 sm:flex justify-between items-start sm:flex-wrap w-full space-y-4 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8"
         >
-          {loading && !recipeList ? (
+          {loadingRecipes && !recipeList ? (
             Array.from({ length: 12 }).map((_, i) => {
               return <CardLoading key={i} />;
             })
-          ) : recipeList.length > 0 ? (
-            recipeList.map((item) => {
+          ) : recipeList?.length > 0 ? (
+            recipeList?.map((item) => {
               return (
                 <Card
                   key={item.id}

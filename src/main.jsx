@@ -11,6 +11,7 @@ import ProtectedRoute from "@/features/protectedRoute";
 
 import AppLayout from "@/layout/app.layout";
 import DashboardLayout from "@/layout/dashboard.layout";
+import SettingsLayout from "@/layout/settings.layout";
 
 import HomeView from "@/view/home/home.view";
 import DetailView from "@/view/home/detail.view";
@@ -38,13 +39,25 @@ const router = createBrowserRouter([
     path: "/",
     element: <AppLayout />,
     children: [
-      { path: "/", element: <HomeView /> },
-      { path: "/category", element: <CategoryView /> },
-      { path: "/recipes", element: <RecipesView /> },
-      { path: "/favourite", element: <FavouriteView /> },
-      { path: "/recipes/detail/:id", element: <DetailView /> },
-      { path: "/Settings", element: <SettingsView /> },
-      { path: "/Profile", element: <ProfileView /> },
+      { index: true, element: <HomeView /> },
+      { path: "category", element: <CategoryView /> },
+      { path: "recipes", element: <RecipesView /> },
+      { path: "favourite", element: <FavouriteView /> },
+      { path: "recipes/detail/:id", element: <DetailView /> },
+    ],
+  },
+  {
+    path: "/My",
+    element: <SettingsLayout />,
+    children: [
+      {
+        index: true,
+        element: <ProfileView />,
+      },
+      {
+        path: "settings",
+        element: <SettingsView />,
+      },
     ],
   },
   {

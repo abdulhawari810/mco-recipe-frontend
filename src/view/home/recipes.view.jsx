@@ -23,7 +23,7 @@ export default function RecipesView() {
   const [filterdebounced, setFilterDebounced] = useState(null);
   const nav = useNavigate();
 
-  const { recipes, error, loading } = useAllRecipes({
+  const { recipes, error, loadingRecipes } = useAllRecipes({
     query: debouncedSearchTerm,
     category: filterdebounced?.category,
     difficulty: filterdebounced?.difficulty,
@@ -31,14 +31,28 @@ export default function RecipesView() {
     page,
   });
   const { createFavourite } = useCreateFavourite();
+  const [Loadingsearch, setLoadingSearch] = useState(false);
 
   useEffect(() => {
+    if (!search.trim()) {
+      setLoadingSearch(false);
+      setDebouncedSearchTerm("");
+      return;
+    }
+
+    setLoadingSearch(true);
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(search);
     }, 500);
 
     return () => clearTimeout(timer);
   }, [search]);
+
+  useEffect(() => {
+    if (!loadingRecipes) {
+      setLoadingSearch(false);
+    }
+  }, [loadingRecipes]);
 
   const handlefilterChange = () => {
     setFilterDebounced(filter);
@@ -55,24 +69,31 @@ export default function RecipesView() {
         <h1 className="text-2xl font-bold mb-4">All Recipes</h1>
 
         {/* Search + Filter */}
-        <div className="flex flex-row items-center justify-center md:justify-start gap-3 mb-10">
-          <input
-            type="text"
-            placeholder="Search recipes..."
-            className="w-80 sm:w-[25rem] md:w-[30rem] lg:w-[35rem] h-14 rounded-full bg-white shadow-md outline-none p-4 text-md pr-12"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <button
-            type="button"
-            className={`w-fit h-fit p-3 font-bold rounded-xl hover:bg-orange-500 cursor-pointer hover:text-white shadow-lg text-orange-500 ${!filter || Object.values(filter).every((v) => !v) ? "" : "bg-orange-500 text-white"} text-md`}
-            onClick={() => {
-              setIsModalOpen(true);
-              setModalType("filter");
-            }}
-          >
-            {renderIcon("Filter", { className: "w-5 h-5" })}
-          </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 px-5 mb-10">
+          <div className="w-full flex items-center justify-center gap-5 relative">
+            <div className="flex items-center justify-center relative">
+              <input
+                type="text"
+                placeholder="Search recipes..."
+                className="w-80 sm:w-[25rem] md:w-[30rem] lg:w-[35rem] h-14 rounded-full bg-white shadow-md outline-none p-4 text-md pr-12"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              {Loadingsearch && (
+                <span className="absolute right-5 animate-spin border-3 border-t-transparent w-5 h-5 rounded-full border-orange-500"></span>
+              )}
+            </div>
+            <button
+              type="button"
+              className={`w-fit h-fit p-3 font-bold rounded-xl hover:bg-orange-500 cursor-pointer hover:text-white shadow-lg text-orange-500 ${!filter || Object.values(filter).every((v) => !v) ? "" : "bg-orange-500 text-white"} text-md`}
+              onClick={() => {
+                setIsModalOpen(true);
+                setModalType("filter");
+              }}
+            >
+              {renderIcon("Filter", { className: "w-5 h-5" })}
+            </button>
+          </div>
         </div>
 
         {/* Card Grid */}
@@ -80,12 +101,12 @@ export default function RecipesView() {
           className="columns-2
          mt-5  sm:flex justify-between items-start sm:flex-wrap w-full space-y-4 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8"
         >
-          {loading && !recipeList ? (
+          {loadingRecipes && !recipeList ? (
             Array.from({ length: 12 }).map((_, i) => {
               return <CardLoading key={i} />;
             })
-          ) : recipeList.length > 0 ? (
-            recipeList.map((item) => {
+          ) : recipeList?.length > 0 ? (
+            recipeList?.map((item) => {
               return (
                 <Card
                   key={item.id}
@@ -176,7 +197,7 @@ export default function RecipesView() {
           setIsModalOpen(false);
           setModalType("");
         }}
-        bodyClass="bg-white w-full rounded-lg overflow-hidden z-50"
+        bodyClass="bg-white w-full md:w-1/2 rounded-lg overflow-hidden z-50"
         titleClass="bg-gray-200 p-4"
         btnClass="text-gray-500 flex items-center justify-end hover:text-gray-700"
         containerClass="bg-black/50 fixed top-0 px-4 sm:px-8 left-0 w-full h-full flex items-center justify-center z-50"
