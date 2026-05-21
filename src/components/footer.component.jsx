@@ -75,7 +75,7 @@ export default function Footer() {
             <div className="flex flex-col gap-4">
               {me && (
                 <a
-                  href={"/profile"}
+                  href={"/My"}
                   className="text-slate-400 hover:text-orange-400 transition-colors duration-200 text-sm"
                 >
                   My Profile

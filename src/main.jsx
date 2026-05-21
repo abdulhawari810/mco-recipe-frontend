@@ -123,10 +123,8 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <Toaster position="top-center" reverseOrder={false} />
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  </StrictMode>,
+  <QueryClientProvider client={queryClient}>
+    <Toaster position="top-center" reverseOrder={false} />
+    <RouterProvider router={router} />
+  </QueryClientProvider>,
 );
