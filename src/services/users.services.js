@@ -11,6 +11,9 @@ export const getUserById = async (id) => {
 export const updateUserById = async (id, data) => {
   return axiosInstance.patch(`/users/update/${id}`, data);
 };
+export const updateProfileUsers = async (data) => {
+  return axiosInstance.post(`/users/profile/update`, data);
+};
 export const updateStatusUsers = async (id, data) => {
   return axiosInstance.post(`/users/update/status/${id}`, data);
 };

@@ -11,6 +11,7 @@ const Card = ({
   badge,
   onCardClick,
   onFavouriteClick,
+  onLoadingFavourite,
   onEditClick,
   onDeleteClick,
   onAcceptClick,
@@ -115,7 +116,11 @@ const Card = ({
             className=" flex items-center z-20 p-2 bg-gray-900 hover:bg-orange-500 cursor-pointer rounded-bl-lg justify-center text-white top-0 right-0"
             onClick={onFavouriteClick}
           >
-            {renderIcon("Heart", { className: "w-6 h-6" })}
+            {onLoadingFavourite ? (
+              <span className="w-5 h-5 rounded-full border-2 border-t-transparent border-white animate-spin"></span>
+            ) : (
+              <div>{renderIcon("Heart", { className: "w-6 h-6" })}</div>
+            )}
           </button>
         )}
       </div>

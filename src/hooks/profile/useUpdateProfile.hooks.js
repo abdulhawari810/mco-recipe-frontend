@@ -7,13 +7,13 @@ export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
 
   const {
-    mutateAsync: updateProfile,
+    mutateAsync: updateProfileUsers,
     isPending,
     error,
   } = useMutation({
-    mutationFn: ({ id, payload }) => updateProfile(id, payload),
+    mutationFn: (payload) => updateProfile(payload),
     onSuccess: (res) => {
-      toast.success(res?.data?.message || "profile berhasil diupdate");
+      toast.success(res?.data?.data?.message || "profile berhasil diupdate");
     },
 
     onError: (error) => {
@@ -22,7 +22,7 @@ export const useUpdateProfile = () => {
   });
 
   return {
-    updateProfile,
+    updateProfileUsers,
     loadingUpdateProfile: isPending,
     error,
   };

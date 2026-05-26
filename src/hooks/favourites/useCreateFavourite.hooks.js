@@ -2,9 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFavourite } from "@/services/favourite.services";
 import { toast } from "react-hot-toast";
 import { favouriteKeys } from "@/utils/queryKeys";
+import { useState } from "react";
 
 export const useCreateFavourite = () => {
   const queryClient = useQueryClient();
+  const [loadingFavouriteId, setLoadingFavouriteId] = useState(null);
 
   const {
     mutateAsync: createFavouriteMutate,
@@ -23,9 +25,20 @@ export const useCreateFavourite = () => {
     },
   });
 
+  const handleCreateFavourite = async (id) => {
+    try {
+      setLoadingFavouriteId(id);
+
+      await createFavouriteMutate(id);
+    } finally {
+      setLoadingFavouriteId(null);
+    }
+  };
+
   return {
-    createFavourite: createFavouriteMutate,
+    createFavourite: handleCreateFavourite,
     loadingCreateFavourite: isPending,
+    loadingFavouriteId,
     error,
   };
 };

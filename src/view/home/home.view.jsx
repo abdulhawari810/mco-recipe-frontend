@@ -22,7 +22,7 @@ export default function HomeView() {
     time: filterdebounced.time,
     page,
   });
-  const { createFavourite } = useCreateFavourite();
+  const { createFavourite, loadingFavouriteId } = useCreateFavourite();
   const nav = useNavigate();
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function HomeView() {
               return <CardLoading key={i} />;
             })
           ) : recipeList?.length > 0 ? (
-            recipeList?.map((item) => {
+            recipeList?.map((item, i) => {
               return (
                 <Card
                   key={item.id}
@@ -104,6 +104,7 @@ export default function HomeView() {
                     e.stopPropagation();
                     createFavourite(item.id);
                   }}
+                  onLoadingFavourite={loadingFavouriteId === item.id}
                 />
               );
             })

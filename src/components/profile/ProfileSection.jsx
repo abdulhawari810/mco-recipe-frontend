@@ -1,8 +1,106 @@
 import { renderIcon } from "@/utils/icons.utils";
+import { useEffect, useState } from "react";
+import { useUpdateProfile } from "@/hooks/profile/useUpdateProfile.hooks";
+import toast from "react-hot-toast";
+import { useProfile } from "@/hooks/profile/useProfile.hooks";
+import { useAuth } from "@/hooks/auth/useAuth.hooks";
 
 export default function ProfileSection({ users }) {
+  const { profile, loadingProfile } = useProfile();
+  const { updateProfileUsers, loadingUpdateProfileUsers } = useUpdateProfile();
+  const { me, loadingMe } = useAuth();
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    phone: "",
+    date: "",
+    gender: "",
+    preference_food: [],
+    alergi_food: [""],
+    skill: "",
+    profile: "",
+  });
+  const [foodInput, setFoodInput] = useState("");
+
+  const formatDateForInput = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0];
+  };
+
+  useEffect(() => {
+    if (profile && me) {
+      setForm({
+        username: me?.username || "",
+        email: me?.email || "",
+        phone: profile?.phone || "",
+        date: formatDateForInput(profile?.date) || "",
+        gender: profile?.gender || "",
+        alergi_food:
+          typeof profile?.alergi_food === "string"
+            ? JSON.parse(profile?.alergi_food)
+            : profile?.alergi_food,
+
+        preference_food:
+          typeof profile?.preference_food === "string"
+            ? JSON.parse(profile?.preference_food)
+            : profile?.preference_food,
+        skill: profile?.skill || "",
+        profile: me?.profile || "",
+      });
+    }
+  }, [profile, me]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateProfileUsers(form);
+  };
+  console.log(form);
+
+  const addField = (fieldName) => {
+    setForm((prev) => ({
+      ...prev,
+      [fieldName]: [...prev[fieldName], ""],
+    }));
+  };
+
+  const removeField = (fieldName, index) => {
+    setForm((prev) => ({
+      ...prev,
+      [fieldName]: prev[fieldName].filter((_, i) => i !== index),
+    }));
+  };
+  const handleMultiChange = (fieldName, index, value) => {
+    const updated = [...form[fieldName]];
+    updated[index] = value;
+
+    setForm((prev) => ({
+      ...prev,
+      [fieldName]: updated,
+    }));
+  };
+
+  const handleAddPreferenceFood = () => {
+    if (foodInput.trim() === "") {
+      toast.error("Preferensi makanan tidak boleh kosong!");
+      return;
+    }
+    setForm((prev) => ({
+      ...prev,
+      preference_food: [...prev.preference_food, foodInput],
+    }));
+
+    setFoodInput("");
+  };
+
+  const handleRemovePreferenceFood = (index) => {
+    setForm((prev) => ({
+      ...prev,
+      preference_food: prev.preference_food.filter((_, i) => i !== index),
+    }));
+  };
   return (
-    <form className="w-full h-full flex flex-col gap-8">
+    <form className="w-full h-full flex flex-col gap-8" onSubmit={handleSubmit}>
       <div className="flex flex-col bg-white rounded-2xl shadow-md p-6 gap-5">
         {/* HEADER */}
         <div className="flex flex-col items-center gap-4">
@@ -57,6 +155,8 @@ export default function ProfileSection({ users }) {
             <input
               type="text"
               id="username"
+              value={form.username}
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
               placeholder=" "
               className="peer w-full h-14 rounded-xl border border-slate-300 px-4 outline-none focus:border-orange-400 not-placeholder-shown:border-orange-400"
             />
@@ -74,6 +174,8 @@ export default function ProfileSection({ users }) {
             <input
               type="email"
               id="email"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder=" "
               className="peer w-full h-14 rounded-xl border border-slate-300 px-4 outline-none focus:border-orange-400 not-placeholder-shown:border-orange-400"
             />
@@ -91,6 +193,8 @@ export default function ProfileSection({ users }) {
             <input
               type="number"
               id="phone"
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
               placeholder=" "
               className="peer w-full h-14 rounded-xl border border-slate-300 px-4 outline-none focus:border-orange-400 not-placeholder-shown:border-orange-400"
             />
@@ -108,6 +212,8 @@ export default function ProfileSection({ users }) {
             <input
               type="date"
               id="date"
+              value={form.date}
+              onChange={(e) => setForm({ ...form, date: e.target.value })}
               className="w-full h-14 rounded-xl border border-slate-300 px-4 outline-none focus:border-orange-400"
             />
           </div>
@@ -124,8 +230,14 @@ export default function ProfileSection({ users }) {
                 </label>
               </div>
 
-              <select className="w-full h-14 rounded-xl border border-slate-300 px-4 outline-none focus:border-orange-400">
-                <option value="">Pilih Skill</option>
+              <select
+                className="w-full h-14 rounded-xl border border-slate-300 px-4 outline-none focus:border-orange-400"
+                value={form.skill || ""}
+                onChange={(e) => setForm({ ...form, skill: e.target.value })}
+              >
+                <option value="" disabled>
+                  Pilih Skill
+                </option>
                 <option value="beginner">Beginner</option>
                 <option value="medium">Medium</option>
                 <option value="expert">Expert</option>
@@ -138,12 +250,19 @@ export default function ProfileSection({ users }) {
             <h2 className="font-semibold text-slate-700">Jenis Kelamin</h2>
 
             <div className="flex flex-wrap gap-4">
-              {["female", "male", "transgender"].map((gender) => (
+              {["female", "male"].map((gender) => (
                 <label
                   key={gender}
                   className="flex items-center gap-2 px-4 py-3 rounded-xl border border-slate-300 cursor-pointer hover:border-orange-400 transition"
                 >
-                  <input type="radio" value={gender} />
+                  <input
+                    type="radio"
+                    value={gender}
+                    checked={form.gender === gender}
+                    onChange={(e) =>
+                      setForm({ ...form, gender: e.target.value })
+                    }
+                  />
                   <span className="capitalize">{gender}</span>
                 </label>
               ))}
@@ -162,11 +281,15 @@ export default function ProfileSection({ users }) {
               type="text"
               placeholder="Contoh: Pedas, Vegan, Seafood"
               className="flex-1 h-14 rounded-xl border border-slate-300 px-4 outline-none focus:border-orange-400"
+              name="preference_food"
+              value={foodInput}
+              onChange={(e) => setFoodInput(e.target.value)}
             />
 
             <button
               type="button"
               className="h-14 px-6 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-600 transition"
+              onClick={handleAddPreferenceFood}
             >
               Tambah
             </button>
@@ -174,19 +297,23 @@ export default function ProfileSection({ users }) {
 
           {/* RESULT BUTTON */}
           <div className="flex flex-wrap gap-3">
-            <button
-              type="button"
-              className="px-4 py-2 rounded-full bg-orange-100 text-orange-600 text-sm"
-            >
-              Vegan
-            </button>
-
-            <button
-              type="button"
-              className="px-4 py-2 rounded-full bg-orange-100 text-orange-600 text-sm"
-            >
-              Seafood
-            </button>
+            {Array.isArray(form.preference_food) &&
+              form.preference_food.map((item, index) => {
+                return (
+                  <div className="flex items-center gap-2" key={index}>
+                    <span className="p-2 rounded-full bg-orange-500/5 text-orange-500">
+                      {item}
+                    </span>
+                    <button
+                      type="button"
+                      className="flex items-center justify-center p-2 text-red-500 bg-red-500/5 rounded-full cursor-pointer"
+                      onClick={() => handleRemovePreferenceFood(index)}
+                    >
+                      {renderIcon("X", { className: "w-5 h-5" })}
+                    </button>
+                  </div>
+                );
+              })}
           </div>
         </div>
 
@@ -198,6 +325,7 @@ export default function ProfileSection({ users }) {
             <button
               type="button"
               className="px-4 py-2 rounded-xl bg-slate-800 text-white text-sm hover:bg-slate-700"
+              onClick={() => addField("alergi_food")}
             >
               Tambah Input
             </button>
@@ -205,20 +333,30 @@ export default function ProfileSection({ users }) {
 
           {/* DYNAMIC INPUT */}
           <div className="flex flex-col gap-3">
-            <div className="flex gap-3">
-              <input
-                type="text"
-                placeholder="Contoh: Kacang, Udang"
-                className="flex-1 h-14 rounded-xl border border-slate-300 px-4 outline-none focus:border-orange-400"
-              />
+            {Array.isArray(form["alergi_food"]) &&
+              form["alergi_food"].map((item, index) => {
+                return (
+                  <div className="flex gap-3" key={index}>
+                    <input
+                      type="text"
+                      placeholder="Contoh: Kacang, Udang"
+                      className="flex-1 h-14 rounded-xl border border-slate-300 px-4 outline-none focus:border-orange-400"
+                      value={item}
+                      onChange={(e) =>
+                        handleMultiChange("alergi_food", index, e.target.value)
+                      }
+                    />
 
-              <button
-                type="button"
-                className="w-14 h-14 rounded-xl bg-red-500 text-white hover:bg-red-600"
-              >
-                X
-              </button>
-            </div>
+                    <button
+                      type="button"
+                      className="w-14 h-14 rounded-xl bg-red-500 text-white hover:bg-red-600"
+                      onClick={() => removeField("alergi_food", index)}
+                    >
+                      X
+                    </button>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>
