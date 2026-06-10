@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllUsers } from "@/services/users.services";
-import { use } from "react";
 
 export const useAllUsers = ({ search, sort, filter } = {}) => {
   // 🔹 GET ALL USERS

@@ -1,13 +1,15 @@
 import { renderIcon } from "@/utils/icons.utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUpdateProfile } from "@/hooks/profile/useUpdateProfile.hooks";
 import toast from "react-hot-toast";
 import { useProfile } from "@/hooks/profile/useProfile.hooks";
 import { useAuth } from "@/hooks/auth/useAuth.hooks";
+import { useUploadAvatar } from "@/hooks/upload/useUploadAvatar.hooks";
 
 export default function ProfileSection({ users }) {
   const { profile, loadingProfile } = useProfile();
   const { updateProfileUsers, loadingUpdateProfileUsers } = useUpdateProfile();
+  const { createUploadAvatar } = useUploadAvatar();
   const { me, loadingMe } = useAuth();
   const [form, setForm] = useState({
     username: "",
@@ -21,6 +23,8 @@ export default function ProfileSection({ users }) {
     profile: "",
   });
   const [foodInput, setFoodInput] = useState("");
+  const fileInputRef = useRef(null);
+  const [file, setFile] = useState(null);
 
   const formatDateForInput = (dateString) => {
     if (!dateString) return "";
@@ -51,11 +55,25 @@ export default function ProfileSection({ users }) {
     }
   }, [profile, me]);
 
+  const handleClickUpload = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleChangeFile = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append("avatars", selectedFile);
+
+    createUploadAvatar(formData);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     updateProfileUsers(form);
   };
-  console.log(form);
 
   const addField = (fieldName) => {
     setForm((prev) => ({
@@ -107,17 +125,26 @@ export default function ProfileSection({ users }) {
           {users?.profile !== "default.png" ? (
             <div className="relative">
               <img
-                src={users?.profile}
+                src={`${import.meta.env.VITE_BASE_API_UPLOAD}/${users?.profile}`}
                 alt={users?.username}
                 className="w-40 h-40 rounded-full object-cover border-4 border-orange-300 shadow-lg"
               />
 
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/png,image/jpeg,image/jpg,image/webp"
+                hidden
+                onChange={handleChangeFile}
+              />
+
               <button
                 type="button"
-                className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-orange-100 transition"
+                onClick={handleClickUpload}
+                className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-white shadow-md flex items-center cursor-pointer  text-orange-500 justify-center hover:bg-orange-100 transition"
               >
                 {renderIcon("SquarePen", {
-                  className: "w-5 h-5 text-orange-500",
+                  className: "w-5 h-5",
                 })}
               </button>
             </div>
@@ -129,12 +156,21 @@ export default function ProfileSection({ users }) {
                 })}
               </div>
 
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/png,image/jpeg,image/jpg,image/webp"
+                hidden
+                onChange={handleChangeFile}
+              />
+
               <button
                 type="button"
-                className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-orange-100 transition"
+                onClick={handleClickUpload}
+                className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-white shadow-md flex items-center cursor-pointer  text-orange-500 justify-center hover:bg-orange-100 transition"
               >
                 {renderIcon("SquarePen", {
-                  className: "w-5 h-5 text-orange-500",
+                  className: "w-5 h-5",
                 })}
               </button>
             </div>
