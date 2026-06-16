@@ -25,7 +25,11 @@ export default function ProfileMenu({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+  const production = import.meta.env.VITE_ENVIRONMENT;
+  const upload =
+    production === "production"
+      ? import.meta.env.VITE_BASE_API_UPLOAD
+      : "http://localhost:5010";
   return (
     <>
       <div className="relative cursor-pointer" ref={menuRef}>
@@ -36,7 +40,7 @@ export default function ProfileMenu({
         >
           {profile && profile !== "default.png" ? (
             <img
-              src={profile}
+              src={`${upload}/${profile}` || "/default-avatar.png"}
               alt={name}
               className="w-10 h-10  rounded-full object-cover"
             />
