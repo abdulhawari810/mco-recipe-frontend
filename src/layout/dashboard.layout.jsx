@@ -29,9 +29,9 @@ export default function DasboardLayout() {
     return (
       <div className="flex flex-col h-screen">
         <Navbar />
-        <main className="md:p-4 lg:p-4 flex gap-4 pt-20 md:pt-25 lg:pt-[90px]">
+        <main className="md:p-4 lg:p-4 flex gap-4 pt-20 md:pt-25 lg:pt-22.5">
           <Menu />
-          <div className="w-full h-fit lg:h-[450px] lg:overflow-y-scroll">
+          <div className="w-full h-fit lg:h-112.5 lg:overflow-y-scroll">
             <Outlet />
           </div>
         </main>

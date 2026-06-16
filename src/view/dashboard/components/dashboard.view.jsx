@@ -19,7 +19,7 @@ export default function DashboardView({
         <div className="p-3 sm:p-4 rounded-2xl bg-white grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           <NavLink
             to={"/dashboard/chef/recipe"}
-            className="w-full group relative min-h-[140px] bg-blue-700 p-4 sm:p-5 hover:scale-[1.02] transition-all duration-300 rounded-2xl text-white flex flex-col justify-between"
+            className="w-full group relative min-h-35 bg-blue-700 p-4 sm:p-5 hover:scale-[1.02] transition-all duration-300 rounded-2xl text-white flex flex-col justify-between"
           >
             <div className="flex items-start justify-between gap-3">
               <h1 className="font-bold text-lg sm:text-xl leading-tight">
@@ -43,7 +43,7 @@ export default function DashboardView({
           </NavLink>
 
           <NavLink
-            className="w-full group relative min-h-[140px] bg-amber-700 hover:scale-[1.02] transition-all duration-300 p-4 sm:p-5 rounded-2xl text-white flex flex-col justify-between"
+            className="w-full group relative min-h-35 bg-amber-700 hover:scale-[1.02] transition-all duration-300 p-4 sm:p-5 rounded-2xl text-white flex flex-col justify-between"
             to={{
               pathname:
                 me?.role === "admin"
@@ -74,7 +74,7 @@ export default function DashboardView({
           </NavLink>
 
           <NavLink
-            className="w-full group relative min-h-[140px] bg-orange-600 hover:scale-[1.02] transition-all duration-300 p-4 sm:p-5 rounded-2xl text-white flex flex-col justify-between"
+            className="w-full group relative min-h-35 bg-orange-600 hover:scale-[1.02] transition-all duration-300 p-4 sm:p-5 rounded-2xl text-white flex flex-col justify-between"
             to={{
               pathname:
                 me?.role === "admin"
@@ -105,7 +105,7 @@ export default function DashboardView({
           </NavLink>
 
           <NavLink
-            className="w-full group relative min-h-[140px] bg-green-700 hover:scale-[1.02] transition-all duration-300 p-4 sm:p-5 rounded-2xl text-white flex flex-col justify-between"
+            className="w-full group relative min-h-35 bg-green-700 hover:scale-[1.02] transition-all duration-300 p-4 sm:p-5 rounded-2xl text-white flex flex-col justify-between"
             to={{
               pathname:
                 me?.role === "admin"
@@ -136,7 +136,7 @@ export default function DashboardView({
           </NavLink>
 
           <NavLink
-            className="w-full group relative min-h-[140px] bg-orange-700 p-4 sm:p-5 hover:scale-[1.02] transition-all duration-300 rounded-2xl text-white flex flex-col justify-between"
+            className="w-full group relative min-h-35 bg-orange-700 p-4 sm:p-5 hover:scale-[1.02] transition-all duration-300 rounded-2xl text-white flex flex-col justify-between"
             to={{
               pathname:
                 me?.role === "admin"

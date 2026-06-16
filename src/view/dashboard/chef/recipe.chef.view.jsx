@@ -90,7 +90,7 @@ export default function RecipeChefView() {
                 value={search}
                 autoComplete="off"
                 onChange={(e) => setsearch(e.target.value)}
-                className="w-[250px] lg:w-[400px] h-14 rounded-full bg-white shadow-md outline-none p-4 text-md pr-12"
+                className="w-62.5 lg:w-100 h-14 rounded-full bg-white shadow-md outline-none p-4 text-md pr-12"
                 placeholder="Search recipe..."
               />
               {renderIcon("Search", {

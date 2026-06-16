@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // feature
 import ProtectedRoute from "@/features/protectedRoute";
-import ProtectedRouteUsers from "@/features/ProtectedRouteUsers";
+import ProtectedRouteUsers from "@/features/protectedRouteUsers";
 
 import AppLayout from "@/layout/app.layout";
 import DashboardLayout from "@/layout/dashboard.layout";
@@ -22,7 +22,6 @@ import RecipesView from "@/view/home/recipes.view";
 import FavouriteView from "@/view/home/favourite.view";
 import RegisterView from "@/view/auth/register.view";
 import LoginView from "@/view/auth/login.view";
-import DashboardView from "@/view/dashboard/components/dashboard.view";
 import ProfileView from "@/view/home/profile.view";
 
 // chef dashboard

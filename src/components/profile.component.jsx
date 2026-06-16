@@ -57,7 +57,7 @@ export default function ProfileMenu({
 
             <ul className="mt-2 space-y-2 py-2.5 flex flex-col text-sm">
               <NavLink to={"/My"} state={{ page: "profile" }}>
-                <li className="w-full cursor-pointer text-left px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 dark:hover:bg-neutral-800 transition">
+                <li className="w-full cursor-pointer text-left px-3 py-2 rounded-lg hover:bg-gray-100  dark:hover:bg-neutral-800 transition">
                   Profile
                 </li>
               </NavLink>
