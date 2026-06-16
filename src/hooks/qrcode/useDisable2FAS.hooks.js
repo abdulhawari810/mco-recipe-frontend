@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { disable2FAS } from "@/services/qrcode.services";
 import { toast } from "react-hot-toast";
 import { qrcodeKeys } from "@/utils/queryKeys";
+import { formatDateTime } from "@/utils/formatDateTime";
 
 export const useDisable2FAS = () => {
   const queryClient = useQueryClient();
@@ -13,6 +14,7 @@ export const useDisable2FAS = () => {
   } = useMutation({
     mutationFn: (payload) => disable2FAS(payload),
     onSuccess: (res) => {
+      const date = res?.data?.data?.two_factor_updateAt;
       toast.success(
         res?.data?.message || "Verifikasi 2 langkah berhasil dinonaktifkan!",
       );
@@ -20,6 +22,7 @@ export const useDisable2FAS = () => {
       localStorage.setItem("modal_active", false);
       localStorage.removeItem("2fas_step");
       localStorage.removeItem("qrcode");
+      localStorage.setItem("two_factor_updateAt", formatDateTime(date));
       queryClient.invalidateQueries(qrcodeKeys.all());
     },
 

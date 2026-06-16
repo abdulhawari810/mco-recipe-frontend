@@ -177,7 +177,7 @@ export default function SecuritySection() {
                 {t("security.two_step_verification.text")}
               </span>
             </div>
-            <div className="flex items-center justify-end w-full">
+            <div className="flex flex-col gap-4 items-end justify-end w-full">
               <button
                 className={`p-2 w-15 rounded-full outline ${buttonStep ? "outline-orange-500" : "outline-slate-500"} flex items-center justify-center text-md cursor-pointer text-slate-600`}
                 onClick={() => {
@@ -196,6 +196,14 @@ export default function SecuritySection() {
                   className={`w-5 h-5 rounded-full transform ${buttonStep ? "bg-orange-500 translate-x-3" : "-translate-x-3 bg-slate-500"} transition-transform! duration-300`}
                 ></div>
               </button>
+              <div className="flex items-center gap-2">
+                <span className="text-md font-medium">
+                  Terakhir Diaktifkan:
+                </span>
+                <span className="dark:text-orange-200/70 text-sm text-gray-600">
+                  {localStorage.getItem("two_factor_updateAt")}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -593,6 +601,7 @@ export default function SecuritySection() {
               if (!loadingDisable2FAS) {
                 setShowModal(false);
                 setModalType("");
+                setButtonStep(false);
                 setOtp(["", "", "", "", "", ""]);
               }
             } catch (error) {
