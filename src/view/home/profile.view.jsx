@@ -19,7 +19,7 @@ export default function ProfileView() {
   });
   const [showMenu, setShowMenu] = useState(false);
   const [isMobile, setMobile] = useState("mobile");
-  const menuWidth = "w-[80%] max-w-[320px] md:w-[260px]";
+  const menuWidth = "w-[90%] max-w-[420px] md:w-[260px]";
 
   const setPages = (page) => {
     setActiveMenu(page);
@@ -54,14 +54,22 @@ export default function ProfileView() {
 
   return (
     <>
-      <div className="relative w-full min-h-screen overflow-hidden bg-slate-100 dark:bg-neutral-950">
+      <div className="relative w-full overflow-hidden md:min-h-screen dark:bg-neutral-950">
         {/* Button menu mobile */}
-        <div className="relative bg-white top-0 left-0 z-50 p-5 md:hidden">
+        <div className="relative bg-white dark:bg-neutral-900 top-0 left-0 z-50 p-5 md:hidden">
           <button
-            className="cursor-pointer"
+            className="cursor-pointer w-6 h-6 overflow-hidden flex items-center justify-center relative"
             onClick={() => setShowMenu(!showMenu)}
           >
-            {renderIcon("Menu", { className: "w-6 h-6" })}
+            <span
+              className={`w-full h-0.5 dark:bg-white bg-black rounded-full transition-all! absolute left-0  ${showMenu ? "translate-y- rotate-45 " : "-translate-y-2 rotate-0"}`}
+            ></span>
+            <span
+              className={`w-full h-0.5 dark:bg-white bg-black rounded-full absolute transition-all! left-0 ${showMenu ? "translate-x-900" : "translate-x-0"}`}
+            ></span>
+            <span
+              className={`w-full transition-all! h-0.5 dark:bg-white bg-black rounded-full absolute left-0 ${showMenu ? "translate-y-0 -rotate-220 " : "translate-y-2 rotate-0"}`}
+            ></span>
           </button>
         </div>
 
@@ -73,19 +81,19 @@ export default function ProfileView() {
           />
         )}
 
-        <div className="flex min-h-screen">
+        <div className="flex md:min-h-screen h-[90vh]">
           {/* Sidebar */}
           <aside
             className={`
     ${menuWidth}
     fixed md:relative top-0 left-0 z-40
-    h-screen p-6 pt-20 md:pt-6 shrink-0
+    h-screen p-6 pt-18 md:pt-6 shrink-0
     transition-transform duration-300 ease-in-out
     ${showMenu ? "translate-x-0" : "-translate-x-full"}
     md:translate-x-0
   `}
           >
-            <div className="w-full h-full p-4 bg-white dark:bg-neutral-900 rounded-2xl shadow-lg flex flex-col space-y-4">
+            <div className="w-full h-fil p-4 bg-white dark:bg-neutral-900 rounded-2xl shadow-lg flex flex-col space-y-4">
               <NavLink
                 to={"/"}
                 className="text-orange-500 peer flex items-center justify-start rounded-lg gap-2 hover:bg-orange-500 bg-orange-500/10 hover:text-white! p-2 text-md font-bold"
@@ -160,9 +168,9 @@ export default function ProfileView() {
           {/* Main Content */}
           <main
             className={`
-        w-full md:min-h-screen h-fit overflow-scroll p-6 pt-6 md:pt-6
+        w-full md:min-h-screen p-2.5 md:p-6 pt-2 md:pt-6
         transition-transform duration-300 ease-in-out
-        ${showMenu ? "translate-x-[80%]" : "translate-x-0"}
+        ${showMenu ? "translate-x-[90%]" : "translate-x-0"}
         md:translate-x-0
       `}
           >

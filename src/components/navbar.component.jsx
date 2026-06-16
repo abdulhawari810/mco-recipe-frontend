@@ -44,9 +44,9 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`bg-white dark:bg-neutral-900 shadow-lg fixed top-0 transition-transform duration-300 left-0 z-50 w-full h-16 lg:h-20 ${showNav ? "translate-y-0" : "-translate-y-full"}`}
+        className={`bg-white dark:bg-neutral-900 shadow-lg fixed top-0 transition-transform duration-300 left-0 z-50 min-w-full h-16 lg:h-20 ${showNav ? "translate-y-0" : "-translate-y-full"}`}
       >
-        <div className="max-w-7xl mx-auto px-4 items-center sm:px-6 lg:px-8">
+        <div className="md:max-w-7xl mx-auto px-4 items-center sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex shrink-0">
@@ -150,13 +150,13 @@ const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center gap-2.5">
-              <button className="text-gray-700 hover:text-orange-600 focus:outline-none relative p-2.5">
+              <button className="text-gray-700 dark:text-orange-200/50 hover:text-orange-600 focus:outline-none relative p-2.5">
                 {renderIcon("Bell", { className: "w-6 h-6" })}
                 <span className="absolute font-black top-0 right-0">0</span>
               </button>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`${isOpen ? "text-orange-500" : "text-gray-700"}`}
+                className={`${isOpen ? "text-orange-500" : "text-gray-700 dark:text-orange-200/50"}`}
               >
                 {renderIcon("Menu", { className: "w-6 h-6" })}
               </button>
@@ -165,15 +165,16 @@ const Navbar = () => {
 
           {/* Mobile Menu */}
           <div
-            className={`md:hidden navbar  w-8/12 h-screen bg-white fixed top-15 ${isOpen ? "show flex flex-col" : "hide hidden"} transition-transform duration-200 p-4 z-50`}
+            className={`md:hidden navbar w-10/12 gap-2 right-0 h-screen bg-white dark:bg-neutral-900 fixed top-15 ${isOpen ? "show flex flex-col" : "hide hidden"} transition-transform duration-200 p-4 z-50`}
           >
             <NavLink
               to="/"
               className={({ isActive }) =>
                 isActive
-                  ? "text-orange-600 px-3 py-2 rounded-md text-lg font-medium transition"
-                  : "text-gray-900 px-3 py-2 rounded-md text-lg font-medium transition"
+                  ? "text-orange-500 bg-orange-500/10 px-3 py-2 rounded-md text-lg font-medium transition"
+                  : "text-gray-900 dark:text-orange-200/50 px-3 py-2 rounded-md text-lg font-medium transition"
               }
+              onClick={() => setIsOpen(false)}
             >
               Home
             </NavLink>
@@ -181,9 +182,10 @@ const Navbar = () => {
               to="/recipes"
               className={({ isActive }) =>
                 isActive
-                  ? "text-orange-600 px-3 py-2 rounded-md text-lg font-medium transition"
-                  : "text-gray-900 px-3 py-2 rounded-md text-lg font-medium transition"
+                  ? "text-orange-500 bg-orange-500/10 px-3 py-2 rounded-md text-lg font-medium transition"
+                  : "text-gray-900 dark:text-orange-200/50 px-3 py-2 rounded-md text-lg font-medium transition"
               }
+              onClick={() => setIsOpen(false)}
             >
               Recipes
             </NavLink>
@@ -191,9 +193,10 @@ const Navbar = () => {
               to="/category"
               className={({ isActive }) =>
                 isActive
-                  ? "text-orange-600 px-3 py-2 rounded-md text-lg font-medium transition"
-                  : "text-gray-900 px-3 py-2 rounded-md text-lg font-medium transition"
+                  ? "text-orange-500 bg-orange-500/10 px-3 py-2 rounded-md text-lg font-medium transition"
+                  : "text-gray-900 dark:text-orange-200/50 px-3 py-2 rounded-md text-lg font-medium transition"
               }
+              onClick={() => setIsOpen(false)}
             >
               All Category
             </NavLink>
@@ -202,9 +205,10 @@ const Navbar = () => {
                 to="/dashboard/chef"
                 className={({ isActive }) =>
                   isActive
-                    ? "text-orange-600 px-3 py-2 rounded-md text-lg font-medium transition"
-                    : "text-gray-900 px-3 py-2 rounded-md text-lg font-medium transition"
+                    ? "text-orange-500 bg-orange-500/10 px-3 py-2 rounded-md text-lg font-medium transition"
+                    : "text-gray-900 dark:text-orange-200/50 px-3 py-2 rounded-md text-lg font-medium transition"
                 }
+                onClick={() => setIsOpen(false)}
               >
                 My Recipes
               </NavLink>
@@ -214,8 +218,8 @@ const Navbar = () => {
                 to="/dasboard/admin"
                 className={({ isActive }) =>
                   isActive
-                    ? "text-orange-600 px-3 py-2 rounded-md text-lg font-medium transition"
-                    : "text-gray-900 px-3 py-2 rounded-md text-lg font-medium transition"
+                    ? "text-orange-500 bg-orange-500/10 px-3 py-2 rounded-md text-lg font-medium transition"
+                    : "text-gray-900 dark:text-orange-200/50 px-3 py-2 rounded-md text-lg font-medium transition"
                 }
               >
                 Dashboard
@@ -227,24 +231,29 @@ const Navbar = () => {
                   to="/favourite"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-orange-600 px-3 py-2 rounded-md text-lg font-medium transition"
-                      : "text-gray-900 px-3 py-2 rounded-md text-lg font-medium transition"
+                      ? "text-orange-500 bg-orange-500/10 px-3 py-2 rounded-md text-lg font-medium transition"
+                      : "text-gray-900 dark:text-orange-200/50 px-3 py-2 rounded-md text-lg font-medium transition"
                   }
+                  onClick={() => setIsOpen(false)}
                 >
                   Favourite ({favourites?.length || 0})
                 </NavLink>
                 <NavLink
-                  to="#"
+                  to="/My"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-orange-600 px-3 py-2 rounded-md text-lg font-medium transition"
-                      : "text-gray-900 px-3 py-2 rounded-md text-lg font-medium transition"
+                      ? "text-orange-500 bg-orange-500/10 px-3 py-2 rounded-md text-lg font-medium transition"
+                      : "text-gray-900 dark:text-orange-200/50 px-3 py-2 rounded-md text-lg font-medium transition"
                   }
+                  onClick={() => setIsOpen(false)}
                 >
                   Settings
                 </NavLink>
                 <NavLink
-                  onClick={logout}
+                  onClick={() => {
+                    logout.mutate();
+                    setIsOpen(false);
+                  }}
                   className="text-red-500 px-3 bg-red-500/5 py-2 rounded-md text-lg font-medium transition mt-10"
                 >
                   Logout

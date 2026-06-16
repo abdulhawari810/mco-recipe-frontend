@@ -141,7 +141,7 @@ export default function SecuritySection() {
   return (
     <>
       <main className="w-full h-full">
-        <div className="flex flex-col min-w-full w-full bg-white dark:text-white dark:bg-neutral-900 p-6 rounded-2xl">
+        <div className="flex flex-col min-w-full w-full bg-white dark:text-white dark:bg-neutral-900 p-4 md:p-6 rounded-2xl">
           <div className="flex items-center mb-5">
             <h1 className="font-bold text-xl">{t("security.title")}</h1>
           </div>
@@ -156,7 +156,7 @@ export default function SecuritySection() {
             </div>
             <div className="flex items-center justify-end w-full">
               <button
-                className="p-2.5 rounded-full outline outline-slate-500 dark:outline-orange-500 dark:text-orange-500 flex items-center justify-center text-md cursor-pointer text-slate-600"
+                className="p-2.5 rounded-full outline outline-slate-500 dark:outline-orange-500 dark:text-orange-500 flex items-center justify-center text-xs md:text-md cursor-pointer text-slate-600"
                 onClick={() => {
                   setShowModal(true);
                   setModalType("password");
@@ -196,14 +196,16 @@ export default function SecuritySection() {
                   className={`w-5 h-5 rounded-full transform ${buttonStep ? "bg-orange-500 translate-x-3" : "-translate-x-3 bg-slate-500"} transition-transform! duration-300`}
                 ></div>
               </button>
-              <div className="flex items-center gap-2">
-                <span className="text-md font-medium">
-                  Terakhir Diaktifkan:
-                </span>
-                <span className="dark:text-orange-200/70 text-sm text-gray-600">
-                  {localStorage.getItem("two_factor_updateAt")}
-                </span>
-              </div>
+              {localStorage.getItem("two_factor_updateAt") && (
+                <div className="flex items-center gap-2">
+                  <span className="text-md font-medium">
+                    Terakhir Diaktifkan:
+                  </span>
+                  <span className="dark:text-orange-200/70 text-sm text-gray-600">
+                    {localStorage.getItem("two_factor_updateAt")}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 

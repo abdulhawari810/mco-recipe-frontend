@@ -27,13 +27,13 @@
   }
 
   100% {
-    transform: translateX(50%);
+    transform: translateX(0%);
   }
 }
 
 @keyframes navbarHidden {
   0% {
-    transform: translateX(50%);
+    transform: translateX(0%);
   }
 
   50% {

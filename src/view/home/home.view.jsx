@@ -53,7 +53,6 @@ export default function HomeView() {
   };
 
   const recipeList = recipes?.data;
-  const authors = recipeList?.map((item) => item.recipe);
 
   return (
     <div className="home-view">

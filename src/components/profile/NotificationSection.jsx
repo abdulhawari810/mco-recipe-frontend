@@ -2,21 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function NotificationSection() {
-  const [buttonStep, setButtonStep] = useState(() => {
-    const saved = localStorage.getItem("notification_settings");
-
-    if (saved) {
-      return JSON.parse(saved);
-    }
-
-    return notif.reduce((acc, item) => {
-      acc[item.id] = item.is_active;
-      return acc;
-    }, {});
-  });
-
   const { t, i18n } = useTranslation();
-
   const notif = [
     {
       id: 1,
@@ -43,6 +29,18 @@ export default function NotificationSection() {
       is_active: true,
     },
   ];
+  const [buttonStep, setButtonStep] = useState(() => {
+    const saved = localStorage.getItem("notification_settings");
+
+    if (saved) {
+      return JSON.parse(saved);
+    }
+
+    return notif.reduce((acc, item) => {
+      acc[item.id] = item.is_active;
+      return acc;
+    }, {});
+  });
 
   const handleToggle = (id) => {
     setButtonStep((prev) => ({

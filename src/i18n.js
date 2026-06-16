@@ -1,12 +1,12 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import id from "./locales/id.json";
-import en from "./locales/en.json";
-import jp from "./locales/jp.json";
-import kr from "./locales/kr.json";
+import id from "@/locales/id.json";
+import en from "@/locales/en.json";
+import jp from "@/locales/jp.json";
+import kr from "@/locales/kr.json";
 
-const defaultLanguage = localStorage.getItem("language");
+const defaultLanguage = localStorage.getItem("language") || "id";
 
 i18n.use(initReactI18next).init({
   resources: {
