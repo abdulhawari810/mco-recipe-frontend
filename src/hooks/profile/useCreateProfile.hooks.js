@@ -14,7 +14,7 @@ export const useCreateProfile = () => {
     mutationFn: (payload) => createProfile(payload),
 
     onSuccess: (res) => {
-      toast.success(res?.data?.message || "Profile berhasil disimpan");
+      toast.success(res?.data?.message || "Profile berhasil diupdate");
       queryClient.invalidateQueries({ queryKey: profileKeys.all() });
     },
 

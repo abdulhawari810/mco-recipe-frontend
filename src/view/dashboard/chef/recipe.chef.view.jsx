@@ -247,7 +247,7 @@ export default function RecipeChefView() {
             setModalType("");
           }}
           btnTitleCancel={"Cancel"}
-          bodyClass="bg-white w-1/2 rounded-lg overflow-hidden z-100"
+          bodyClass="bg-white w-1/2 rounded-lg overflow-hidden z-1000"
           containerClass="bg-black/50 fixed top-0 left-0 w-full h-full flex items-center justify-center z-40"
           btnTitleConfirm={"Yes, Delete it"}
           title={"Apakah anda yakin ingin menghapus?"}

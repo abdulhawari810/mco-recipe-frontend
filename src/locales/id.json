@@ -1,0 +1,133 @@
+{
+  "security": {
+    "title": "Keamanan",
+    "password": {
+      "title": "Kata Sandi",
+      "text": "Ubah kata sandi untuk menjaga keamanan akun."
+    },
+    "two_step_verification": {
+      "title": "Verifikasi 2 Langkah",
+      "text": "Gunakan kode verifikasi tambahan saat login."
+    },
+    "delete_account": {
+      "title": "Hapus Akun",
+      "text": "Menghapus akun sementara."
+    },
+    "2_factor": {
+      "title": "Pengaturan Keamanan",
+      "title_header": "Aktifkan Otentikasi Dua Faktor",
+      "paragraph_header": "Amankan akun Anda dengan lapisan perlindungan tambahan. Pindai kode untuk menghubungkan identitas Anda dengan 2FAS Auth aplikasi.",
+      "step1": {
+        "text": "Buka",
+        "text2": "Aplikasi Otentikasi 2FAS",
+        "text3": "(atau otentikasi pilihan Anda) di ponsel Anda perangkat."
+      },
+      "step2": {
+        "text": "Ketuk",
+        "text2": "tombol dan pilih",
+        "text3": "Pindai Kode QR"
+      },
+      "text_animation": "Menunggu koneksi"
+    },
+    "verify_2_factor": {
+      "title": "Masukkan Kode Verifikasi",
+      "paragraph": "Kami telah mengirimkan kode 6 digit ke perangkat Anda yang terdaftar. Silakan masukkan di bawah untuk melanjutkan identitas Anda."
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "cooking_level": "Tingkat Memasak",
+    "cooking_paragraph": "Pilih tingkat kemampuan memasak kamu",
+    "select_skill": "Pilih Skill",
+    "preference_food": "Preferensi Makanan",
+    "alergi_food": "Alergi Makanan",
+    "add_input": "Tambah Input",
+    "toast_preference_food": "Preferensi makanan tidak boleh kosong!",
+    "loading_save": "Menyimpan..."
+  },
+  "notification": {
+    "title": "Notifikasi",
+    "security_alert": {
+      "title": "Peringatan Keamanan",
+      "text": "Terima notifikasi saat ada aktivitas mencurigakan, login baru, atau perubahan keamanan akun."
+    },
+    "email_update": {
+      "title": "Pembaruan Email",
+      "text": "Dapatkan informasi terbaru melalui email mengenai akun dan aktivitas penting Anda."
+    },
+    "recipe_update": {
+      "title": "Pembaruan Resep",
+      "text": "Terima pemberitahuan ketika resep favorit atau resep yang Anda ikuti mendapatkan pembaruan."
+    },
+    "activity_summary": {
+      "title": "Ringkasan Aktivitas",
+      "text": "Lihat ringkasan aktivitas akun, termasuk resep, favorit, dan interaksi terbaru."
+    }
+  },
+  "theme": {
+    "title": "Tema",
+    "paragraph": "Ini hanya akan mengubah tema situs web ini, itu tidak akan mempengaruhi pengaturan tema default browser Anda.",
+    "change_theme": "Ubah Tema",
+    "default": "Bawaan",
+    "dark": "Gelap",
+    "green": "Hijau",
+    "light": "Terang",
+    "yellow": "Kuning"
+  },
+  "delete_account": {
+    "title": "Hapus Akun"
+  },
+  "homepage": {
+    "title": "Beranda"
+  },
+  "language": {
+    "title": "Bahasa",
+    "change_language": "Ganti Bahasa",
+    "change": "Ganti",
+    "search_language": "Cari Bahasa",
+    "search": "Cari",
+    "paragraph": "Ini hanya akan mengubah bahasa situs web ini, itu tidak akan mempengaruhi pengaturan bahasa default browser Anda.",
+    "success": "Bahasa Berhasil Diubah!",
+    "indonesian": "Indonesia",
+    "japanese": "Jepang",
+    "english": "Inggris",
+    "korean": "Korea"
+  },
+  "common": {
+    "save": "Simpan",
+    "btn_cancel": "Batalkan",
+    "btn_confirm": "Konfirmasi",
+    "confirm": "Konfirmasi",
+    "delete": "Hapus",
+    "edit": "Ubah",
+    "update": "Perbarui",
+    "profile": "Profil",
+    "cancel": "Batal",
+    "change_password": "Ubah Kata Sandi",
+    "old": "Lama",
+    "new": "Baru",
+    "password": "Kata Sandi",
+    "none": "Tidak Ada",
+    "deactive": "Tidak Aktif",
+    "active": "Aktif",
+    "complete": "Lengkapi",
+    "information": "Informasi",
+    "you": "Kamu",
+    "username": "Nama Pengguna",
+    "phone_number": "Nomor Telepon",
+    "email_address": "Alamat Email",
+    "gender": "Jenis Kelamin",
+    "add": "Tambah",
+    "male": "Laki Laki",
+    "female": "Perempuan",
+    "example": "Contoh",
+    "prawn": "Udang",
+    "spicy": "Pedas",
+    "seafood": "Makanan Laut",
+    "close": "Tutup",
+    "done": "Selesai",
+    "verify": "Periksa",
+    "verification": "Verifikasi",
+    "verifying": "Sedang Memverifikasi..."
+  }
+}

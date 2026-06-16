@@ -22,7 +22,7 @@ export default function DetailView() {
   const ingredients = parseJSON(recipe?.ingredients);
 
   return (
-    <div className="max-w-6xl mx-auto p-10 space-y-6 bg-white rounded-2xl">
+    <div className="max-w-6xl mx-auto p-10 space-y-6 bg-white dark:bg-neutral-900 rounded-2xl">
       {loadingSingleRecipes ? (
         <div className="grid grid-cols-1 items-start gap-5">
           <div className="flex items-start gap-5">
@@ -92,7 +92,7 @@ export default function DetailView() {
                 </span>
               </div>
               {/* Description */}
-              <p className="text-gray-700 leading-relaxed my-5">
+              <p className="text-gray-700 dark:text-orange-200/70  leading-relaxed my-5">
                 {recipe?.description}
               </p>
             </div>
@@ -102,7 +102,7 @@ export default function DetailView() {
             {/* Ingredients */}
             <div className="w-full ">
               <h2 className="text-lg font-bold mb-2">Bahan</h2>
-              <ul className="list-disc list-inside text-gray-700 space-y-1">
+              <ul className="list-disc list-inside text-gray-700 dark:text-orange-200/70 space-y-1">
                 {Array.isArray(ingredients) &&
                   ingredients.map((item, index) => <li key={index}>{item}</li>)}
               </ul>
@@ -111,7 +111,7 @@ export default function DetailView() {
             {/* Steps */}
             <div className="w-full">
               <h2 className="text-lg font-bold mb-2">Langkah</h2>
-              <ol className="list-decimal list-inside text-gray-700 space-y-2">
+              <ol className="list-decimal list-inside text-gray-700 space-y-2 dark:text-orange-200/70">
                 {Array.isArray(instructions) &&
                   instructions.map((step, index) => (
                     <li key={index}>{step}</li>

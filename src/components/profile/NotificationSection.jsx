@@ -1,31 +1,5 @@
 import { useState, useEffect } from "react";
-
-const notif = [
-  {
-    id: 1,
-    title: "Security Alerts",
-    desc: "Make your account extra secure, Along with your password, you'll need to enter a code",
-    is_active: true,
-  },
-  {
-    id: 2,
-    title: "Email Updates",
-    desc: "Make your account extra secure, Along with your password, you'll need to enter a code",
-    is_active: true,
-  },
-  {
-    id: 3,
-    title: "Recipes Updates",
-    desc: "Make your account extra secure, Along with your password, you'll need to enter a code",
-    is_active: true,
-  },
-  {
-    id: 4,
-    title: "Activity Summary",
-    desc: "Make your account extra secure, Along with your password, you'll need to enter a code",
-    is_active: true,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export default function NotificationSection() {
   const [buttonStep, setButtonStep] = useState(() => {
@@ -41,6 +15,35 @@ export default function NotificationSection() {
     }, {});
   });
 
+  const { t, i18n } = useTranslation();
+
+  const notif = [
+    {
+      id: 1,
+      title: t("notification.security_alert.title"),
+      desc: t("notification.security_alert.text"),
+      is_active: true,
+    },
+    {
+      id: 2,
+      title: t("notification.email_update.title"),
+      desc: t("notification.email_update.text"),
+      is_active: true,
+    },
+    {
+      id: 3,
+      title: t("notification.recipe_update.title"),
+      desc: t("notification.recipe_update.text"),
+      is_active: true,
+    },
+    {
+      id: 4,
+      title: t("notification.activity_summary.title"),
+      desc: t("notification.activity_summary.text"),
+      is_active: true,
+    },
+  ];
+
   const handleToggle = (id) => {
     setButtonStep((prev) => ({
       ...prev,
@@ -51,11 +54,9 @@ export default function NotificationSection() {
   useEffect(() => {
     localStorage.setItem("notification_settings", JSON.stringify(buttonStep));
   }, [buttonStep]);
-
-  console.log(notif.slice(3)[0]);
   return (
     <main className="w-full h-full">
-      <div className="flex flex-col w-full bg-white p-6 rounded-2xl">
+      <div className="flex flex-col w-full bg-white dark:bg-neutral-900 dark:text-white p-6 rounded-2xl">
         {notif.map((item, i) => {
           const isToggle = buttonStep[item.id];
           const lastIndex = notif.slice(3)[0];
@@ -65,8 +66,12 @@ export default function NotificationSection() {
               key={i}
             >
               <div className="flex flex-col gap-1 w-full">
-                <h1 className="text-lg font-semibold">{item.title}</h1>
-                <span className="text-md text-slate-500">{item.desc}</span>
+                <h1 className="text-md md:text-lg font-semibold">
+                  {item.title}
+                </h1>
+                <span className="text-sm md:text-lg text-slate-500 dark:text-orange-200/70">
+                  {item.desc}
+                </span>
               </div>
               <div className="flex items-center justify-end w-full">
                 <button

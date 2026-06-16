@@ -2,8 +2,10 @@ import { Outlet } from "react-router-dom";
 import Navbar from "@/components/navbar.component";
 import Footer from "@/components/footer.component";
 import { useAuth } from "@/hooks/auth/useAuth.hooks";
+import { useTheme } from "@/utils/theme.utils";
 
 export default function AppLayout() {
+  const { theme, setTheme } = useTheme();
   const { me } = useAuth();
 
   if (me?.is_active === "banned") {

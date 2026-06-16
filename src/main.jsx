@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "@/css/global.css";
+import "./i18n";
 import "@/css/custom.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -8,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // feature
 import ProtectedRoute from "@/features/protectedRoute";
+import ProtectedRouteUsers from "@/features/ProtectedRouteUsers";
 
 import AppLayout from "@/layout/app.layout";
 import DashboardLayout from "@/layout/dashboard.layout";
@@ -21,7 +23,6 @@ import FavouriteView from "@/view/home/favourite.view";
 import RegisterView from "@/view/auth/register.view";
 import LoginView from "@/view/auth/login.view";
 import DashboardView from "@/view/dashboard/components/dashboard.view";
-import SettingsView from "@/view/home/settings.view";
 import ProfileView from "@/view/home/profile.view";
 
 // chef dashboard
@@ -48,15 +49,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/My",
-    element: <SettingsLayout />,
+    element: <ProtectedRouteUsers />,
     children: [
       {
-        index: true,
-        element: <ProfileView />,
-      },
-      {
-        path: "settings",
-        element: <SettingsView />,
+        element: <SettingsLayout />,
+        children: [
+          {
+            index: true,
+            element: <ProfileView />,
+          },
+        ],
       },
     ],
   },

@@ -1,0 +1,132 @@
+{
+  "security": {
+    "title": "보안",
+    "password": {
+      "title": "비밀번호",
+      "text": "계정을 안전하게 유지하려면 비밀번호를 변경하세요."
+    },
+    "two_step_verification": {
+      "title": "2단계 인증",
+      "text": "로그인 시 추가 인증번호를 사용하세요."
+    },
+    "delete_account": {
+      "title": "계정 삭제",
+      "text": "계정을 일시적으로 삭제하세요."
+    },
+    "2_factor": {
+      "title": "보안 설정",
+      "title_header": "2단계 인증 활성화",
+      "paragraph_header": "추가 보호 계층으로 계정을 보호하세요. 코드를 스캔하여 귀하의 신원을 앱의 2FAS 인증과 연결하세요.",
+      "step1": {
+        "text": "열려 있는",
+        "text2": "2FAS 인증 애플리케이션",
+        "text3": "(또는 선호하는 인증)을 모바일 장치에서 수행합니다."
+      },
+      "step2": {
+        "text": "클릭 / 누르기",
+        "text2": "버튼 및 선택",
+        "text3": "QR 코드 스캔"
+      },
+      "text_animation": "연결을 기다리는 중"
+    },
+    "verify_2_factor": {
+      "title": "인증코드를 입력하세요",
+      "paragraph": "등록된 기기로 6자리 코드를 보냈습니다. 귀하의 신원을 재개하려면 아래를 입력하십시오"
+    }
+  },
+  "profile": {
+    "title": "윤곽",
+    "cooking_level": "요리레벨",
+    "cooking_paragraph": "요리 스킬 레벨을 선택하세요",
+    "select_skill": "필리 스킬",
+    "preference_food": "선호식품",
+    "alergi_food": "알레르기 마카난",
+    "add_input": "입력 추가",
+    "toast_preference_food": "음식 선호사항은 비워둘 수 없습니다!",
+    "loading_save": "짐싣기의..."
+  },
+  "notification": {
+    "title": "공고",
+    "security_alert": {
+      "title": "보안 경고",
+      "text": "의심스러운 활동, 새로운 로그인 또는 계정 보안 변경이 있는 경우 알림을 받습니다."
+    },
+    "email_update": {
+      "title": "이메일 업데이트",
+      "text": "귀하의 계정 및 중요한 활동에 대한 업데이트를 이메일로 받아보세요."
+    },
+    "recipe_update": {
+      "title": "레시피 업데이트",
+      "text": "좋아하는 레시피나 팔로우하는 레시피가 업데이트되면 알림을 받으세요."
+    },
+    "activity_summary": {
+      "title": "활동 요약",
+      "text": "레시피, 즐겨찾기, 최근 상호작용 등 계정 활동 요약을 봅니다."
+    }
+  },
+  "theme": {
+    "title": "테마 변경",
+    "paragraph": "이는 이 웹사이트의 테마만 변경하며, 브라우저의 기본 테마 설정에는 영향을 미치지 않습니다.",
+    "change_theme": "테마 변경",
+    "default": "기본",
+    "dark": "어두운",
+    "green": "녹색",
+    "yellow": "노란색"
+  },
+  "delete_account": {
+    "title": "계정 삭제"
+  },
+  "homepage": {
+    "title": "홈페이지"
+  },
+  "language": {
+    "title": "언어",
+    "change_language": "언어 변경",
+    "change": "변화",
+    "search_language": "검색 언어",
+    "search": "찾다",
+    "paragraph": "이렇게 하면 이 웹사이트의 언어만 변경됩니다. 브라우저의 기본 언어 설정에는 영향을 미치지 않습니다.",
+    "success": "언어가 성공적으로 변경되었습니다!",
+    "indonesian": "Indonesian",
+    "japanese": "Japanese",
+    "english": "English",
+    "korean": "Korean"
+  },
+  "common": {
+    "save": "구하다",
+    "delete": "삭제",
+    "edit": "편집하다",
+    "update": "업데이트",
+    "profile": "윤곽",
+    "btn_cancel": "취소",
+    "btn_confirm": "확인하다",
+    "cancel": "취소",
+    "confirm": "확인하다",
+    "change_password": "비밀번호 변경",
+    "old": "오래된",
+    "new": "새로운",
+    "password": "비밀번호",
+    "none": "없음",
+    "deactive": "비활성",
+    "active": "활동적인",
+    "complete": "완벽한",
+    "information": "정보",
+    "you": "너",
+    "username": "사용자 이름",
+    "phone_number": "전화 번호",
+    "email_address": "이메일 주소",
+    "gender": "",
+    "add": "성별",
+    "male": "남성",
+    "female": "여성",
+    "example": "예",
+    "prawn": "왕새우",
+    "spicy": "매운",
+    "seafood": "해산물",
+    "close": "닫다",
+    "done": "완료",
+    "verify": "확인하다",
+    "verification": "확인",
+    "verifying": "확인 중..."
+  }
+}

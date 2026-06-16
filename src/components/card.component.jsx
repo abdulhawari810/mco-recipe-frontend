@@ -11,6 +11,7 @@ const Card = ({
   badge,
   onCardClick,
   onFavouriteClick,
+  onFavouriteSaved,
   onLoadingFavourite,
   onEditClick,
   onDeleteClick,
@@ -24,7 +25,7 @@ const Card = ({
   const { user } = useAuth();
   return (
     <div
-      className="bg-white break-inside-avoid w-40 sm:w-44 md:w-40 lg:w-72 rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow relative"
+      className="bg-white dark:bg-neutral-800 break-inside-avoid w-40 sm:w-44 md:w-40 lg:w-72 rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow relative"
       onClick={onCardClick}
     >
       <div
@@ -113,13 +114,17 @@ const Card = ({
         )}
         {onFavouriteClick && (
           <button
-            className=" flex items-center z-20 p-2 bg-gray-900 hover:bg-orange-500 cursor-pointer rounded-bl-lg justify-center text-white top-0 right-0"
+            className={`flex items-center z-20 p-2 bg-gray-900 hover:bg-orange-500 cursor-pointer rounded-bl-lg justify-center  top-0 right-0 ${onFavouriteSaved ? " text-orange-500" : " text-white"}`}
             onClick={onFavouriteClick}
           >
             {onLoadingFavourite ? (
               <span className="w-5 h-5 rounded-full border-2 border-t-transparent border-white animate-spin"></span>
             ) : (
-              <div>{renderIcon("Heart", { className: "w-6 h-6" })}</div>
+              <div>
+                {renderIcon("Heart", {
+                  className: `w-6 h-6 ${onFavouriteSaved ? "fill-orange-500" : ""}`,
+                })}
+              </div>
             )}
           </button>
         )}
@@ -129,13 +134,13 @@ const Card = ({
       </div>
 
       <div className="p-2">
-        <h3 className="text-xs md:text-sm font-medium text-gray-500 mb-2">
+        <h3 className="text-xs md:text-sm font-medium text-gray-500 dark:text-orange-200 mb-2">
           {category}
         </h3>
-        <h3 className="text-sm md:text-md md:mb-2 lg:text-lg font-bold text-gray-800">
+        <h3 className="text-sm md:text-md md:mb-2 lg:text-lg font-bold text-gray-800 dark:text-white">
           {title}
         </h3>
-        <p className="text-gray-600 text-sm mb-2 md:mb-4 truncate">
+        <p className="text-gray-600 dark:text-orange-200 text-sm mb-2 md:mb-4 truncate">
           {description}
         </p>
         <div className="flex items-center flex-wrap gap-2">
@@ -154,7 +159,9 @@ const Card = ({
           {renderIcon("Star", {
             className: "w-4 h-4 text-orange-500 fill-orange-500",
           })}
-          <span className="text-sm font-bold text-gray-900 lg:text-md">5</span>
+          <span className="text-sm font-bold text-gray-900 dark:text-orange-500 lg:text-md">
+            5
+          </span>
         </div>
       </div>
     </div>

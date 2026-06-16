@@ -15,7 +15,7 @@ export const useProfile = () => {
   });
 
   return {
-    profile: profileData?.data?.data || [],
+    profile: profileData?.data?.data || null,
     loadingProfile: isLoading,
     error,
     refetch,

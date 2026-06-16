@@ -7,7 +7,5 @@ export const avatarUpload = async (data) => {
     },
   });
 
-  console.log(res);
-
   return res.data;
 };

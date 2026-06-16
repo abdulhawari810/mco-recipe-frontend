@@ -61,8 +61,8 @@ export default function Menu() {
 
   return (
     <>
-      <container className="w-full lg:w-[30%] fixed bottom-0 left-0 lg:relative px-2.5 z-50">
-        <main className="bg-white w-full  md:h-[75vh] lg:relative md:relative p-4 rounded-2xl h-[80px] lg:[100vh] flex lg:flex-col md:flex-col justify-between items-center md:justify-start md:items-start lg:justify-start lg:items-start gap-2">
+      <container className="w-full lg:w-[30%] fixed bottom-0 left-0 lg:relative px-2.5 z-40">
+        <main className="bg-white w-full  md:h-[75vh] lg:relative md:relative p-4 rounded-2xl h-20 lg:[100vh] flex lg:flex-col md:flex-col justify-between items-center md:justify-start md:items-start lg:justify-start lg:items-start gap-2">
           {Array.isArray(checkMenu) &&
             checkMenu.map((item, i) => {
               return (

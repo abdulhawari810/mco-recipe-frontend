@@ -4,17 +4,39 @@ const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL,
   headers: {
     "Content-Type": "application/json",
-    "ngrok-skip-browser-warning": "69420", // Mengabaikan halaman peringatan ngrok
   },
-  withCredentials: true, // Include cookies in requests
+  timeout: 10000,
+  withCredentials: true,
 });
 
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    const isAuthorized = error?.response?.status === 401;
+    const isRefreshEndpoint = originalRequest?.url?.includes("/auth/refresh");
+    const isLoginPage = window.location.pathname === "/auth/login";
+
+    if (
+      isAuthorized &&
+      originalRequest &&
+      !originalRequest._retry &&
+      !isRefreshEndpoint &&
+      !isLoginPage
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        await axiosInstance.post("/auth/refresh");
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);
 
 export default axiosInstance;

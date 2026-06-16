@@ -18,6 +18,6 @@ export const updateStatusUsers = async (id, data) => {
   return axiosInstance.post(`/users/update/status/${id}`, data);
 };
 
-export const deleteUserById = async (id) => {
-  return axiosInstance.delete(`/users/delete/${id}`);
+export const deleteUser = async () => {
+  return axiosInstance.patch(`/users/delete`);
 };

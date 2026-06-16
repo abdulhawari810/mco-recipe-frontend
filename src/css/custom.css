@@ -1,11 +1,5 @@
 @import "tailwindcss";
-
-/* .animation-label {
-  @apply absolute left-4 transform text-slate-500 translate-y-0 text-md transition-all peer-not-placeholder-shown:-translate-y-7 peer-not-placeholder-shown:bg-white peer-not-placeholder-shown:left-2 peer-not-placeholder-shown:px-2 peer-not-placeholder-shown:text-orange-500 peer-not-placeholder-shown:text-md peer-focus:-translate-y-7 peer-focus:px-2 peer-focus:bg-white peer-focus:left-2 peer-focus:text-xs peer-focus:text-orange-500;
-}
-.animation-input {
-  @apply peer w-full h-14 rounded-xl border border-slate-300 px-4 outline-none focus:border-orange-400 not-placeholder-shown:border-orange-400;
-} */
+@custom-variant dark (&:where(.dark, .dark *));
 
 ::-webkit-scrollbar {
   display: none;

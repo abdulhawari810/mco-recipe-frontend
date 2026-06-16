@@ -3,8 +3,10 @@ import Navbar from "@/components/navbar.component";
 import Footer from "@/components/footer.component";
 import Menu from "@/components/menu.component";
 import { useAuth } from "@/hooks/auth/useAuth.hooks";
+import { useTheme } from "@/utils/theme.utils";
 
 export default function DasboardLayout() {
+  const { theme, setTheme } = useTheme();
   const { me } = useAuth();
   if (me?.is_active === "banned") {
     return (

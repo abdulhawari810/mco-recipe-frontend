@@ -44,7 +44,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`bg-white shadow-lg fixed top-0 transition-transform duration-300 left-0 z-50 w-full h-16 lg:h-20 ${showNav ? "translate-y-0" : "-translate-y-full"}`}
+        className={`bg-white dark:bg-neutral-900 shadow-lg fixed top-0 transition-transform duration-300 left-0 z-50 w-full h-16 lg:h-20 ${showNav ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="max-w-7xl mx-auto px-4 items-center sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -66,8 +66,8 @@ const Navbar = () => {
                   to="/"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-orange-600 px-3 py-2 rounded-md text-sm font-medium transition"
-                      : "text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition"
+                      ? "text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition"
+                      : "text-gray-900 dark:text-orange-700 px-3 py-2 rounded-md text-sm font-medium transition"
                   }
                 >
                   Home
@@ -76,8 +76,8 @@ const Navbar = () => {
                   to="/recipes"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-orange-600 px-3 py-2 rounded-md text-sm font-medium transition"
-                      : "text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition"
+                      ? "text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition"
+                      : "text-gray-900 dark:text-orange-700 px-3 py-2 rounded-md text-sm font-medium transition"
                   }
                 >
                   Recipes
@@ -86,8 +86,8 @@ const Navbar = () => {
                   to="/category"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-orange-600 px-3 py-2 rounded-md text-sm font-medium transition"
-                      : "text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition"
+                      ? "text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition"
+                      : "text-gray-900 dark:text-orange-700 px-3 py-2 rounded-md text-sm font-medium transition"
                   }
                 >
                   Category
@@ -99,8 +99,8 @@ const Navbar = () => {
                       to="/favourite"
                       className={({ isActive }) =>
                         isActive
-                          ? "text-orange-600 relative px-3 py-2 rounded-md text-sm font-medium transition"
-                          : "text-gray-900 relative px-3 py-2 rounded-md text-sm font-medium transition"
+                          ? "text-orange-500 relative px-3 py-2 rounded-md text-sm font-medium transition"
+                          : "text-gray-900 dark:text-orange-700 relative px-3 py-2 rounded-md text-sm font-medium transition"
                       }
                     >
                       Favourite
@@ -112,7 +112,7 @@ const Navbar = () => {
                     </NavLink>
                     <NavLink
                       to="/category"
-                      className="text-gray-700 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium transition"
+                      className="text-gray-700 dark:text-orange-500 dark:hover:text-orange-700 hover:text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition"
                     >
                       {renderIcon("Bell", { className: "w-5 h-5" })}
                     </NavLink>

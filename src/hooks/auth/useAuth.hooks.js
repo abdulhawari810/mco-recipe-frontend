@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { me, logoutUser } from "@/services/auth.services";
-import { AuthKeys } from "@/utils/queryKeys";
+import { AuthKeys, usersKeys } from "@/utils/queryKeys";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -30,6 +30,9 @@ export const useAuth = (query) => {
       // hapus semua cache auth
       queryClient.removeQueries({
         queryKey: AuthKeys.all(),
+      });
+      queryClient.removeQueries({
+        queryKey: usersKeys.all(),
       });
 
       // optional: hapus semua cache

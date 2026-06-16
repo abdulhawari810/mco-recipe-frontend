@@ -18,6 +18,13 @@ export const AuthKeys = {
   all: (params = {}) => ["auth", params],
   register: (params = {}) => ["auth", "register", params],
   login: (params = {}) => ["auth", "login", params],
+  password: (params = {}) => ["auth", "password", params],
+};
+
+export const qrcodeKeys = {
+  all: (params = {}) => ["qrcode", params],
+  setup: (params = {}) => ["qrcode", "setup", params],
+  verify: (params = {}) => ["qrcode", "verify", params],
 };
 
 export const profileKeys = {

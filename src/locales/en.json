@@ -1,0 +1,133 @@
+{
+  "security": {
+    "title": "Security",
+    "password": {
+      "title": "Password",
+      "text": "Change your password to keep your account secure."
+    },
+    "two_step_verification": {
+      "title": "2-Step Verification",
+      "text": "Use additional verification code when logging in."
+    },
+    "delete_account": {
+      "title": "Delete Account",
+      "text": "Temporarily delete your account."
+    },
+    "2_factor": {
+      "title": "Security Setup",
+      "title_header": "Enable Two Factor Authentication",
+      "paragraph_header": "Secure your account with an additional layer of protection. Scan the code to connect your identity with the app's 2FAS Auth.",
+      "step1": {
+        "text": "Open",
+        "text2": "2FAS Authentication Application",
+        "text3": "(or your preferred authentication) on your mobile device."
+      },
+      "step2": {
+        "text": "Tap",
+        "text2": "Button and Select",
+        "text3": "Scan QR Code"
+      },
+      "text_animation": "Waiting For Connections"
+    },
+    "verify_2_factor": {
+      "title": "Enter Verification Code",
+      "paragraph": "We have sent a 6 digit code to your registered device. Please enter below to resume your identity."
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "cooking_level": "Cooking Level",
+    "cooking_paragraph": "Choose your cooking skill level",
+    "select_skill": "Pilih Skill",
+    "preference_food": "Preference Food",
+    "alergi_food": "Alergi Makanan",
+    "add_input": "Add Input",
+    "toast_preference_food": "Food preferences cannot be empty!",
+    "loading_save": "Loading..."
+  },
+  "notification": {
+    "title": "Notification",
+    "security_alert": {
+      "title": "Security Updates",
+      "text": "Receive notifications when there is suspicious activity, new logins, or account security changes."
+    },
+    "email_update": {
+      "title": "Email Updates",
+      "text": "Get email updates about your account and important activity."
+    },
+    "recipe_update": {
+      "title": "Recipes Updates",
+      "text": "Receive notifications when your favorite recipes or recipes you follow get updates."
+    },
+    "activity_summary": {
+      "title": "Activity Summary",
+      "text": "View a summary of account activity, including recipes, favorites, and recent interactions."
+    }
+  },
+  "theme": {
+    "title": "Theme",
+    "paragraph": "This will only change the theme of this website, it will not affect your browser's default theme settings.",
+    "change_theme": "Change Theme",
+    "default": "Default",
+    "dark": "Dark",
+    "green": "Green",
+    "yellow": "Yellow"
+  },
+  "delete_account": {
+    "title": "Delete Account"
+  },
+  "homepage": {
+    "title": "Homepage"
+  },
+  "language": {
+    "title": "Language",
+    "change_language": "Change Language",
+    "change": "Change",
+    "search_language": "Search Language",
+    "search": "Search",
+    "paragraph": "This will change the language for this website only; it will not affect your browser's default language settings.",
+    "success": "Language Changed Successfully!",
+
+    "indonesian": "Indonesian",
+    "japanese": "Japanese",
+    "english": "English",
+    "korean": "Korean"
+  },
+  "common": {
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "btn_cancel": "Cancel",
+    "btn_confirm": "Confirm",
+    "update": "Update",
+    "profile": "Profile",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "change_password": "Change Password",
+    "old": "Old",
+    "new": "New",
+    "password": "Password",
+    "none": "None",
+    "deactive": "Deactive",
+    "active": "Active",
+    "complete": "Complete",
+    "information": "Information",
+    "you": "You",
+    "username": "Username",
+    "phone_number": "Phone Number",
+    "email_address": "Email Address",
+    "gender": "Gender",
+    "add": "Add",
+    "male": "Male",
+    "female": "Female",
+    "example": "Example",
+    "prawn": "Prawn",
+    "spicy": "Spicy",
+    "seafood": "Seafood",
+    "close": "Close",
+    "done": "Done",
+    "verify": "Verify",
+    "verification": "Verification",
+    "verifying": "Is Verifying..."
+  }
+}

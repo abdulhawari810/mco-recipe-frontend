@@ -1,0 +1,134 @@
+{
+  "security": {
+    "title": "安全",
+    "password": {
+      "title": "パスワード",
+      "text": "アカウントを安全に保つためにパスワードを変更してください."
+    },
+    "two_step_verification": {
+      "title": "2段階認証",
+      "text": "ログイン時に追加の確認コードを使用する."
+    },
+    "delete_account": {
+      "title": "アカウントの削除",
+      "text": "アカウントを一時的に削除する."
+    },
+    "2_factor": {
+      "title": "セキュリティ設定",
+      "title_header": "2 要素認証を有効にする",
+      "paragraph_header": "追加の保護層でアカウントを保護します。コードをスキャンして自分の ID をアプリの 2FAS 認証に接続します.",
+      "step1": {
+        "text": "開ける",
+        "text2": "2FAS認証アプリケーション",
+        "text3": "(または好みの認証) をモバイルデバイス上で実行します."
+      },
+      "step2": {
+        "text": "タップ",
+        "text2": "ボタンと選択",
+        "text3": "QRコードをスキャン"
+      },
+      "text_animation": "接続を待機しています"
+    },
+    "verify_2_factor": {
+      "title": "認証コードを入力してください",
+      "paragraph": "登録されたデバイスに 6 桁のコードを送信しました。身分証明書を再開するには、以下に入力してください."
+    }
+  },
+  "profile": {
+    "title": "プロフィール",
+    "cooking_level": "調理レベル",
+    "cooking_paragraph": "料理スキルレベルを選択してください",
+    "select_skill": "ピリスキル",
+    "preference_food": "好みの食べ物",
+    "alergi_food": "アレルギ・マカナン",
+    "add_input": "入力の追加",
+    "toast_preference_food": "食べ物の好みを空にすることはできません!",
+    "loading_save": "充填..."
+  },
+  "notification": {
+    "title": "通知",
+    "security_alert": {
+      "title": "セキュリティ警告",
+      "text": "不審なアクティビティ、新しいログイン、またはアカウントのセキュリティの変更があった場合に通知を受け取ります."
+    },
+    "email_update": {
+      "title": "更新情報をメールで送信",
+      "text": "アカウントと重要なアクティビティに関する最新情報をメールで受け取る."
+    },
+    "recipe_update": {
+      "title": "レシピの更新",
+      "text": "お気に入りのレシピまたはフォローしているレシピが更新されたときに通知を受け取ります."
+    },
+    "activity_summary": {
+      "title": "活動の概要",
+      "text": "レシピ、お気に入り、最近のやり取りなど、アカウントアクティビティの概要を表示します."
+    }
+  },
+  "theme": {
+    "title": "テーマの変更",
+
+    "paragraph": "これはこの Web サイトのテーマのみを変更します。ブラウザのデフォルトのテーマ設定には影響しません.",
+    "change_theme": "テーマの変更",
+    "default": "デフォルト",
+    "dark": "暗い",
+    "green": "緑",
+    "yellow": "黄色"
+  },
+  "delete_account": {
+    "title": "アカウントの削除"
+  },
+  "homepage": {
+    "title": "ホームページ"
+  },
+  "language": {
+    "title": "言語",
+    "change_language": "言語を変更する",
+    "change": "変化",
+    "search_language": "検索言語",
+    "search": "検索",
+    "paragraph": "これにより、この Web サイトの言語のみが変更されます。ブラウザのデフォルトの言語設定には影響しません.",
+    "success": "言語が正常に変更されました!",
+
+    "indonesian": "Indonesian",
+    "japanese": "Japanese",
+    "english": "English",
+    "korean": "Korean"
+  },
+  "common": {
+    "save": "保存",
+    "btn_cancel": "キャンセル",
+    "btn_confirm": "確認する",
+    "delete": "消去",
+    "edit": "編集",
+    "update": "アップデート",
+    "profile": "プロフィール",
+    "cancel": "キャンセル",
+    "confirm": "確認する",
+    "change_password": "パスワードを変更する",
+    "old": "古い",
+    "new": "新しい",
+    "password": "パスワード",
+    "none": "なし",
+    "deactive": "非アクティブ",
+    "active": "アクティブ",
+    "complete": "完了",
+    "information": "情報",
+    "you": "あなた",
+    "username": "ユーザー名",
+    "phone_number": "電話番号",
+    "email_address": "電子メールアドレス",
+    "gender": "性別",
+    "add": "追加",
+    "male": "男",
+    "female": "女性",
+    "example": "例",
+    "prawn": "エビ",
+    "spicy": "辛い",
+    "seafood": "シーフード",
+    "close": "近い",
+    "done": "終わり",
+    "verify": "確認する",
+    "verification": "検証",
+    "verifying": "検証中です..."
+  }
+}

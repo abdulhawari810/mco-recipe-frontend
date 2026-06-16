@@ -1,7 +1,9 @@
 import { Outlet } from "react-router-dom";
 import { useAuth } from "@/hooks/auth/useAuth.hooks";
+import { useTheme } from "@/utils/theme.utils";
 
 export default function SettingsLayout() {
+  const { theme, setTheme } = useTheme();
   const { me } = useAuth();
 
   if (me?.is_active === "banned") {

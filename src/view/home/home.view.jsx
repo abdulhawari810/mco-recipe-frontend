@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import CardLoading from "@/components/loading/card.loading";
+import Pagination from "@/components/pagination.components";
 
 export default function HomeView() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,9 +18,11 @@ export default function HomeView() {
   const [LoadingSearch, setLoadingSearch] = useState(false);
   const { recipes, loadingRecipes } = useAllRecipes({
     query: debouncedSearchTerm,
-    category: filterdebounced.category,
-    difficulty: filterdebounced.difficulty,
-    time: filterdebounced.time,
+    category:
+      filterdebounced.category === "all" ? "" : filterdebounced.category,
+    difficulty:
+      filterdebounced.difficulty === "all" ? "" : filterdebounced.difficulty,
+    time: filterdebounced.time === "all" ? "" : filterdebounced.time,
     page,
   });
   const { createFavourite, loadingFavouriteId } = useCreateFavourite();
@@ -63,11 +66,11 @@ export default function HomeView() {
         onFilterChangeFinal={(finalFilter) => setFilterDebounced(finalFilter)}
       />
 
-      <div className="cards-container bg-white rounded-2xl mt-5 flex flex-col p-4 gap-4">
+      <div className="cards-container bg-white dark:bg-neutral-900 rounded-2xl mt-5 flex flex-col p-4 gap-4">
         {loadingRecipes ? (
           <Skeleton className="w-64 h-6" />
         ) : (
-          <h1 className="text-black font-bold text-xl md:text-2xl">
+          <h1 className="text-black dark:text-white font-bold text-xl md:text-2xl">
             This Weeks Top Recipes
           </h1>
         )}
@@ -117,39 +120,35 @@ export default function HomeView() {
 
         {/* Pagination */}
         {recipes.totalPage > 1 && (
-          <div className="flex justify-center mt-6 gap-2">
-            <button
-              className="px-3 py-1 border rounded cursor-pointer"
-              onClick={() => {
-                if (recipes.currentPage <= 1) return;
-                setPage(recipes.currentPage - 1);
-              }}
-            >
-              Prev
-            </button>
+          <Pagination
+            btnPrev={recipes.currentPage <= 1}
+            btnNext={recipes.currentPage >= recipes.totalPage}
+            onClickBtnNext={() => {
+              if (recipes.currentPage >= recipes.totalPage) return;
+              setPage(recipes.currentPage + 1);
+            }}
+            onClickBtnPrev={() => {
+              if (recipes.currentPage <= 1) return;
+              setPage(recipes.currentPage - 1);
+            }}
+            setPage={setPage}
+          >
             {Array.from({ length: recipes.totalPage }, (_, i) => i + 1).map(
               (p) => (
                 <button
                   key={p}
                   onClick={() => setPage(p)}
                   className={`px-3 py-1 rounded ${
-                    page === p ? "bg-black text-white" : "border"
+                    page === p
+                      ? "bg-black text-white dark:bg-orange-500 dark:text-black"
+                      : "border"
                   }`}
                 >
                   {p}
                 </button>
               ),
             )}
-            <button
-              className="px-3 py-1 border rounded cursor-pointer"
-              onClick={() => {
-                if (recipes.currentPage >= recipes.totalPage) return;
-                setPage(recipes.currentPage + 1);
-              }}
-            >
-              Next
-            </button>
-          </div>
+          </Pagination>
         )}
       </div>
     </div>

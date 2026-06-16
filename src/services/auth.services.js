@@ -5,8 +5,11 @@ export const loginUser = async (data) => {
 };
 
 export const registerUser = async (data) => {
-  console.log("Registering user with data:", data);
   return axiosinstance.post("/auth/register", data);
+};
+
+export const updatePassword = async (data) => {
+  return axiosinstance.post("/auth/password/update", data);
 };
 
 export const me = async () => {

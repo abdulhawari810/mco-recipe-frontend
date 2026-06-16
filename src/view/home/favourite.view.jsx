@@ -22,7 +22,7 @@ export default function FavoritesView() {
 
   const whislist = favourites;
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-neutral-950 p-6">
       {/* HEADER */}
       <div className="mb-6 flex justify-between items-center">
         <h1 className="text-2xl font-bold">
@@ -38,7 +38,7 @@ export default function FavoritesView() {
               return (
                 <div
                   key={item.favourite_recipe.id}
-                  className="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden"
+                  className="bg-white dark:bg-neutral-900 hover:scale-105 transition-all! duration-300 rounded-2xl shadow hover:shadow-lg overflow-hidden"
                 >
                   {/* IMAGE */}
                   <img
@@ -59,7 +59,7 @@ export default function FavoritesView() {
                     {/* ACTION */}
                     <div className="mt-4 cursor-pointer flex justify-between items-center">
                       <button
-                        className="text-blue-500 text-sm"
+                        className="text-blue-500 text-sm cursor-pointer hover:text-orange-500"
                         onClick={() => nav(`/recipes/detail/${item.recipeId}`)}
                       >
                         View Detail

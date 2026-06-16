@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { avatarUpload } from "@/services/upload.services";
 import { usersKeys, AuthKeys } from "@/utils/queryKeys";
+import { useState } from "react";
 
 export const UploadKeys = {
   all: (params = {}) => ["upload", params],
@@ -18,15 +19,16 @@ export const useUploadAvatar = () => {
   } = useMutation({
     mutationFn: (payload) => avatarUpload(payload),
 
-    onSuccess: (res) => {
-      toast.success(res?.data?.message || "Profile berhasil disimpan");
-      queryClient.invalidateQueries({ queryKey: UploadKeys.all() });
-      queryClient.invalidateQueries({ queryKey: usersKeys.all() });
-      queryClient.invalidateQueries({ queryKey: AuthKeys.all() });
+    onSuccess: async (res) => {
+      await queryClient.invalidateQueries({ queryKey: AuthKeys.all() });
+      await queryClient.invalidateQueries({ queryKey: usersKeys.all() });
+      await queryClient.invalidateQueries({ queryKey: UploadKeys.all() });
     },
 
     onError: (error) => {
-      toast.error(error?.response?.data?.message || "Gagal menyimpan Profile");
+      console.error(
+        error?.response?.data?.message || "Gagal menyimpan Profile",
+      );
     },
   });
 
