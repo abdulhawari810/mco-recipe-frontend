@@ -4,7 +4,7 @@
  * @returns {string} - Full path to the image
  */
 export const getAssetImage = (imageName) => {
-  return new URL(`@/assets/${imageName}`, import.meta.url).href;
+  return new URL(`/assets/${imageName}`, import.meta.url).href;
 };
 
 /**
@@ -13,5 +13,5 @@ export const getAssetImage = (imageName) => {
  * @returns {string} - Path to image in assets folder
  */
 export const getImagePath = (imageName) => {
-  return `@/assets/${imageName}`;
+  return `/${imageName}`;
 };
