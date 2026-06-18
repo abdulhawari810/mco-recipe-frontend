@@ -15,7 +15,7 @@ export default function RegisterView() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { registerUsers, loading } = useRegister();
+  const { registerUsers, loadingRegister } = useRegister();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,7 +103,11 @@ export default function RegisterView() {
             />
           </div>
 
-          <ButtonLoading title="Register" type="submit" loading={loading} />
+          <ButtonLoading
+            title="Register"
+            type="submit"
+            loading={loadingRegister}
+          />
         </form>
 
         <p className="text-center text-gray-600 mt-4">

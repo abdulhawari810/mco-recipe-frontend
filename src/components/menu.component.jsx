@@ -61,8 +61,8 @@ export default function Menu() {
 
   return (
     <>
-      <container className="w-full lg:w-[30%] fixed bottom-0 left-0 lg:relative px-2.5 z-40">
-        <main className="bg-white w-full  md:h-[75vh] lg:relative md:relative p-4 rounded-2xl h-20 lg:[100vh] flex lg:flex-col md:flex-col justify-between items-center md:justify-start md:items-start lg:justify-start lg:items-start gap-2">
+      <container className="w-full lg:w-[30%] fixed bottom-0 left-0 lg:relative z-40">
+        <main className="bg-white w-full md:h-[75vh] lg:relative md:relative p-4 lg:[100vh] flex lg:flex-col md:flex-col justify-between items-center md:justify-start md:items-start lg:justify-start lg:items-start gap-2">
           {Array.isArray(checkMenu) &&
             checkMenu.map((item, i) => {
               return (
@@ -77,7 +77,7 @@ export default function Menu() {
                   key={i}
                 >
                   {renderIcon(item.icons, {
-                    className: "lg:w-5 md:w-5 w-[20px] lg:h-5 md:h-5 h-[20px]",
+                    className: "lg:w-5 md:w-5 w-6 lg:h-5 md:h-5 h-6",
                   })}
                   <span className="hidden lg:flex md:flex">{item.name}</span>
                 </NavLink>

@@ -6,7 +6,7 @@ import { useLogin } from "@/hooks/auth/useAuthLogin.hooks";
 import ButtonLoading from "@/components/loading/button.loading";
 
 export default function LoginView() {
-  const { loginUsers, loading } = useLogin();
+  const { loginUsers, loadingLogin } = useLogin();
   const [formData, setFormData] = useState({
     UsersOrEmail: "",
     password: "",
@@ -18,7 +18,6 @@ export default function LoginView() {
     e.preventDefault();
     try {
       await loginUsers({ payload: formData });
-
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -70,7 +69,7 @@ export default function LoginView() {
             </div>
           </div>
 
-          <ButtonLoading loading={loading} title={"Login"} type="submit" />
+          <ButtonLoading loading={loadingLogin} title={"Login"} type="submit" />
         </form>
 
         <div className="mt-6">

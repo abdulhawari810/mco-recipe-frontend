@@ -4,13 +4,13 @@ import { useDeleteFavourite } from "@/hooks/favourites/useDeleteFavourite.hooks"
 import { useNavigate } from "react-router-dom";
 import { getImagePath } from "@/utils/image.utils";
 import { renderIcon } from "@/utils/icons.utils";
+import AnimateSpin from "@/components/anime.spin.component";
 
 export default function FavoritesView() {
-  const { favourites, loading } = useAllFavourite();
-  const { deleteFavourite } = useDeleteFavourite();
+  const { favourites, loadingFavourite } = useAllFavourite();
+  const { handleDeleteFavourite, loadingDeleteFavouriteId } =
+    useDeleteFavourite();
   const nav = useNavigate();
-
-  if (loading) return <p>Loading...</p>;
 
   const parseJSON = (data) => {
     try {
@@ -66,10 +66,14 @@ export default function FavoritesView() {
                       </button>
 
                       <button
-                        onClick={(e) => deleteFavourite(item.recipeId)}
-                        className="text-red-500 cursor-pointer text-sm"
+                        onClick={() => handleDeleteFavourite(item.recipeId)}
+                        className="cursor-pointer p-2"
                       >
-                        Remove
+                        {loadingDeleteFavouriteId === item.recipeId ? (
+                          <AnimateSpin />
+                        ) : (
+                          <span className="text-red-500 text-sm">Hapus</span>
+                        )}
                       </button>
                     </div>
                   </div>

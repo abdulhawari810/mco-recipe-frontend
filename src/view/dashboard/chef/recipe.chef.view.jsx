@@ -9,9 +9,40 @@ import { useCreateRecipes } from "@/hooks/recipes/useCreateRecipes.hooks";
 import FormComponent from "@/components/form.component";
 import { useSingleRecipes } from "@/hooks/recipes/useSingleRecipes.hooks";
 import { getImagePath } from "@/utils/image.utils";
-import Modal from "@/components/modal.component";
+import CardLoading from "@/components/loading/card.loading";
 import NoDataFound from "@/components/no_data_found.component";
+import Modal from "@/components/modal.component";
 import { useAllCategories } from "@/hooks/categories/useAllCategories.hooks";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const selectTriggerClass =
+  "w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-neutral-800 shadow-sm transition " +
+  "focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-white " +
+  "dark:border-neutral-800 dark:bg-neutral-900 dark:text-orange-500 dark:focus:ring-orange-500 dark:focus:ring-offset-neutral-950";
+
+const selectContentClass =
+  "rounded-lg border border-neutral-200 bg-white text-neutral-800 shadow-lg " +
+  "dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100";
+
+const selectLabelClass =
+  "px-2 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-orange-500";
+
+const selectItemClass =
+  "cursor-pointer rounded-md px-3 py-2 text-neutral-700 outline-none transition " +
+  "focus:bg-orange-500 focus:text-white " +
+  "data-[highlighted]:bg-orange-500 data-[highlighted]:text-white " +
+  "data-[state=checked]:bg-orange-500 data-[state=checked]:text-white " +
+  "dark:text-neutral-200 dark:focus:bg-orange-500 dark:focus:text-neutral-950 " +
+  "dark:data-[highlighted]:bg-orange-500 dark:data-[highlighted]:text-neutral-950 " +
+  "dark:data-[state=checked]:bg-orange-500 dark:data-[state=checked]:text-neutral-950";
 
 export default function RecipeChefView() {
   const [selectedId, setSelectedId] = useState(null);
@@ -40,18 +71,18 @@ export default function RecipeChefView() {
     }
   };
 
-  const { recipesByAuthor, loading } = useRecipesByAuthor({
+  const { recipesByAuthor, loadingRecipesAuthor } = useRecipesByAuthor({
     search: debouncedSearchTerm,
     categoryId: filterdebounced?.categoryId,
     time: filterdebounced?.time,
     difficulty: filterdebounced?.difficulty,
     status: getStatus ? filter?.status : filterdebounced?.status,
   });
-  const { deleteRecipes } = useDeleteRecipes();
-  const { updateRecipes } = useUpdateRecipes();
-  const { createRecipes } = useCreateRecipes();
-  const { recipe } = useSingleRecipes(selectedId);
-  const { categories } = useAllCategories();
+  const { deleteRecipes, loadingDeleteRecipes } = useDeleteRecipes();
+  const { updateRecipes, loadingUpdateRecipes } = useUpdateRecipes();
+  const { createRecipes, loadingCreateRecipes } = useCreateRecipes();
+  const { recipe, loadingSingleRecipes } = useSingleRecipes(selectedId);
+  const { categories, loadingCategories } = useAllCategories();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -66,15 +97,6 @@ export default function RecipeChefView() {
     setIsModalOpen(false);
   };
 
-  if (loading) {
-    return (
-      <div className="home-view">
-        <div className="cards-container mt-5 flex flex-col gap-4">
-          <h1 className="text-black font-bold text-2xl">Loading...</h1>
-        </div>
-      </div>
-    );
-  }
   const recipeList = recipesByAuthor?.data;
 
   return (
@@ -109,18 +131,26 @@ export default function RecipeChefView() {
             </button>
           </form>
           <button
-            className="w-fit h-fit p-3 font-bold rounded-xl bg-orange-500 cursor-pointer text-white text-md"
+            className="w-fit md:relative md:top-0 md:right-0 absolute right-5 top-22 h-fit p-3 md:font-bold font-semibold rounded-xl bg-orange-500 cursor-pointer text-white text-md"
             onClick={() => {
               setTypeForm("create");
-              setShowForm(!showForm);
+              setSelectedId(null);
+              setShowForm(true);
             }}
           >
-            Add Recipe
+            Tambah Resep
           </button>
         </div>
-        <div className="flex flex-wrap w-full gap-5 gap-y-7">
-          {Array.isArray(recipeList) && recipeList.length > 0 ? (
-            recipeList.map((item) => {
+
+        <div
+          className={`${recipeList?.length > 0 ? "columns-2" : "flex"} mt-5 sm:flex justify-between items-start sm:flex-wrap w-full space-y-4 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8`}
+        >
+          {loadingRecipesAuthor && !recipeList ? (
+            Array.from({ length: 12 }).map((_, i) => {
+              return <CardLoading key={i} />;
+            })
+          ) : recipeList?.length > 0 ? (
+            recipeList?.map((item) => {
               return (
                 <Card
                   key={item.id}
@@ -137,17 +167,21 @@ export default function RecipeChefView() {
                   time={item.time}
                   category={item.category.name}
                   onCardClick={() => nav(`/recipes/detail/${item.id}`)}
+                  badgehidden={true}
                   onDeleteClick={(e) => {
                     e.stopPropagation();
                     setSelectedId(item.id);
                     setIsModalOpen(true);
                     setModalType("confirm-delete");
                   }}
+                  onLoadingDelete={
+                    selectedId === item.id && loadingDeleteRecipes
+                  }
                   onEditClick={(e) => {
                     e.stopPropagation();
                     setTypeForm("update");
+                    setShowForm(false);
                     setSelectedId(item.id);
-                    setShowForm(!showForm);
                   }}
                   badge={
                     item.status === "pending"
@@ -161,12 +195,25 @@ export default function RecipeChefView() {
                 />
               );
             })
+          ) : debouncedSearchTerm ? (
+            <div>
+              <NoDataFound
+                type={"search"}
+                error={`Resep ${debouncedSearchTerm} tidak ditemukan`}
+              />
+            </div>
           ) : (
-            <NoDataFound error={"Data resep tidak ditemukan"} />
+            <div>
+              <NoDataFound error={`Tidak Ada Data Ditemukan`} />
+            </div>
           )}
         </div>
+
         <FormComponent
-          initialData={recipe}
+          initialData={typeForm === "update" ? recipe : null}
+          loadingState={
+            typeForm === "update" ? loadingUpdateRecipes : loadingCreateRecipes
+          }
           fields={[
             { name: "title", label: "Title", type: "text" },
             { name: "thumbnail", label: "Thumbnail", type: "text" },
@@ -219,13 +266,26 @@ export default function RecipeChefView() {
           onClose={() => {
             typeForm === "update" ? setSelectedId(null) : setShowForm(false);
           }}
-          title={typeForm === "update" ? "Edit Recipe" : "Add Recipe"}
-          onSubmit={(data) => {
+          title={typeForm === "update" ? "Update Resep" : "Tambah Resep"}
+          onSubmit={async (data) => {
             if (typeForm === "create") {
-              createRecipes({ payload: data });
-            } else {
-              updateRecipes({ id: selectedId, payload: data });
+              try {
+                await createRecipes({ payload: data });
+                setShowForm(false);
+                return true;
+              } catch (error) {
+                console.log(error);
+                return false;
+              }
+            }
+
+            try {
+              await updateRecipes({ id: selectedId, payload: data });
               setSelectedId(null);
+              return true;
+            } catch (error) {
+              console.log(error);
+              return false;
             }
           }}
         />
@@ -247,8 +307,8 @@ export default function RecipeChefView() {
             setModalType("");
           }}
           btnTitleCancel={"Cancel"}
-          bodyClass="bg-white w-1/2 rounded-lg overflow-hidden z-1000"
-          containerClass="bg-black/50 fixed top-0 left-0 w-full h-full flex items-center justify-center z-40"
+          bodyClass="bg-white w-full md:w-1/2 rounded-lg overflow-hidden z-1000"
+          containerClass="bg-black/50 px-5 md:px-0 fixed top-0 left-0 w-full h-full flex items-center justify-center z-40"
           btnTitleConfirm={"Yes, Delete it"}
           title={"Apakah anda yakin ingin menghapus?"}
         >
@@ -265,27 +325,24 @@ export default function RecipeChefView() {
           }}
           title="Filter Recipes"
           btnCancel={() => {
-            setFilter({ categoryId: "", difficulty: "", time: "", status: "" });
+            setFilter({ categoryId: "", difficulty: "", time: "" });
             setFilterDebounced({
               categoryId: "",
               difficulty: "",
               time: "",
-              status: "",
             });
-            setSearchParams({});
             setIsModalOpen(false);
             setModalType("");
           }}
           btnConfirm={() => {
-            setSearchParams({ status: filter.status });
             setFilterDebounced(filter);
             setIsModalOpen(false);
             setModalType("");
           }}
-          bodyClass="bg-white w-1/2 rounded-lg overflow-hidden z-40"
-          titleClass="bg-gray-200 p-4"
+          bodyClass="bg-white dark:bg-neutral-950 w-full md:w-1/2 rounded-lg overflow-hidden z-50"
+          titleClass="bg-gray-200 dark:bg-neutral-900 p-4"
           btnClass="text-gray-500 flex items-center justify-end hover:text-gray-700"
-          containerClass="bg-black/50 fixed top-0 left-0 w-full h-full flex items-center justify-center z-40"
+          containerClass="bg-black/50 fixed px-10 md:px-0 top-0 left-0 w-full h-full flex items-center justify-center z-50"
           customClass="p-4 flex flex-col z-100 gap-4 rounded-lg w-full "
           bodyButtonClass="flex items-center justify-end p-4 border-t gap-4"
           btnTitleCancel={
@@ -294,57 +351,109 @@ export default function RecipeChefView() {
               : "Reset"
           }
           btnTitleConfirm="Apply"
-          btnConfirmClass="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 cursor-pointer transition"
+          btnConfirmClass="bg-orange-500 dark:text-black text-white px-4 py-2 rounded-lg hover:bg-orange-600 cursor-pointer transition"
           btnCancelClass="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 cursor-pointer transition"
         >
-          <select
-            value={filter?.categoryId || ""}
-            onChange={(e) =>
-              setFilter({ ...filter, categoryId: e.target.value })
-            }
-            className="border px-3 py-2 rounded-lg"
+          {/* KATEGORI */}
+          <Select
+            value={filter?.category || ""}
+            onValueChange={(value) => setFilter({ ...filter, category: value })}
           >
-            <option value="">Semua Kategori</option>
-            <option value="1">Makanan</option>
-            <option value="2">Minuman</option>
-            <option value="3">Dessert</option>
-          </select>
-          <select
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Pilih Kategori Makanan" />
+            </SelectTrigger>
+
+            <SelectContent className={selectContentClass}>
+              <SelectGroup>
+                <SelectLabel className={selectLabelClass}>Kategori</SelectLabel>
+                <SelectItem className={selectItemClass} value="all">
+                  Semua Kategori
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="makanan">
+                  Makanan
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="minuman">
+                  Minuman
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="dessert">
+                  Dessert
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          {/* TINGKAT KESULITAN */}
+          <Select
             value={filter?.difficulty || ""}
-            onChange={(e) =>
-              setFilter({ ...filter, difficulty: e.target.value })
+            onValueChange={(value) =>
+              setFilter({ ...filter, difficulty: value })
             }
-            className="border px-3 py-2 rounded-lg"
           >
-            <option value="">Semua Tingkat Kesulitan</option>
-            <option value="easy">Mudah</option>
-            <option value="medium">Sedang</option>
-            <option value="hard">Sulit</option>
-            <option value="extreme">Sangat Sulit</option>
-          </select>
-          <select
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Pilih Tingkat Memasak" />
+            </SelectTrigger>
+
+            <SelectContent className={selectContentClass}>
+              <SelectGroup>
+                <SelectLabel className={selectLabelClass}>
+                  Tingkat Memasak
+                </SelectLabel>
+
+                <SelectItem className={selectItemClass} value="all">
+                  Semua Tingkatan
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="easy">
+                  Mudah
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="medium">
+                  Sedang
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="hard">
+                  Sulit
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="extreme">
+                  Sangat Sulit
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          {/* WAKTU MEMASAK */}
+          <Select
             value={filter?.time || ""}
-            onChange={(e) => setFilter({ ...filter, time: e.target.value })}
-            className="border px-3 py-2 rounded-lg"
+            onValueChange={(value) => setFilter({ ...filter, time: value })}
           >
-            <option value="">Semua Rentang Waktu</option>
-            <option value="10">10 Menit</option>
-            <option value="20">20 Menit</option>
-            <option value="30">30 Menit</option>
-            <option value="50">50 Menit</option>
-            <option value="100">100 Menit</option>
-          </select>
-          <select
-            value={filter?.status || ""}
-            onChange={(e) => setFilter({ ...filter, status: e.target.value })}
-            className="border px-3 py-2 rounded-lg"
-          >
-            <option value="">Semua Status</option>
-            <option value="pending">Pending</option>
-            <option value="draft">Draft</option>
-            <option value="accept">Disetujui</option>
-            <option value="reject">Ditolak</option>
-          </select>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Pilih Waktu Memasak" />
+            </SelectTrigger>
+
+            <SelectContent className={selectContentClass}>
+              <SelectGroup>
+                <SelectLabel className={selectLabelClass}>
+                  Waktu Memasak
+                </SelectLabel>
+
+                <SelectItem className={selectItemClass} value="all">
+                  Semua Waktu
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="10">
+                  10 Menit
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="20">
+                  20 Menit
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="30">
+                  30 Menit
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="50">
+                  50 Menit
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="100">
+                  100 Menit
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </Modal>
       </main>
     </>

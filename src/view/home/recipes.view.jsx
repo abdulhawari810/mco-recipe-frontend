@@ -39,7 +39,7 @@ export default function RecipesView() {
     time: filterdebounced?.time,
     page,
   });
-  const { createFavourite } = useCreateFavourite();
+  const { createFavourite, loadingFavouriteId } = useCreateFavourite();
   const [Loadingsearch, setLoadingSearch] = useState(false);
 
   useEffect(() => {
@@ -69,7 +69,6 @@ export default function RecipesView() {
   };
 
   const recipeList = recipes?.data;
-  const authors = recipeList?.map((item) => item.recipe);
 
   const selectTriggerClass =
     "w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-neutral-800 shadow-sm transition " +
@@ -137,12 +136,10 @@ export default function RecipesView() {
             })
           ) : recipeList?.length > 0 ? (
             recipeList?.map((item) => {
-              let saved = null;
-              saved = favourites.find((f) => f.recipeId === item.id);
-              console.log(saved);
               return (
                 <Card
                   key={item.id}
+                  itemId={item.id}
                   title={item.title}
                   description={item.description}
                   image={
@@ -156,7 +153,7 @@ export default function RecipesView() {
                   time={item.time}
                   category={item.category?.name}
                   onCardClick={() => nav(`/recipes/detail/${item.id}`)}
-                  onFavouriteSaved={saved}
+                  onFavouriteSaved={favourites}
                   onFavouriteClick={(e) => {
                     e.stopPropagation();
                     if (saved) {
@@ -165,13 +162,17 @@ export default function RecipesView() {
                     }
                     createFavourite(item.id);
                   }}
+                  onLoadingFavourite={loadingFavouriteId === item.id}
                 />
               );
             })
+          ) : debouncedSearchTerm ? (
+            <NoDataFound
+              type={"search"}
+              error={`Resep ${debouncedSearchTerm} tidak ditemukan`}
+            />
           ) : (
-            <h1 className="text-2xl font-bold text-black">
-              Data tidak ditemukan
-            </h1>
+            <NoDataFound error={`Tidak Ada Data Ditemukan`} />
           )}
         </div>
 

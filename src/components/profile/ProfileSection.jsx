@@ -7,6 +7,7 @@ import { useProfile } from "@/hooks/profile/useProfile.hooks";
 import { useAuth } from "@/hooks/auth/useAuth.hooks";
 import { useUploadAvatar } from "@/hooks/upload/useUploadAvatar.hooks";
 import { useTranslation } from "react-i18next";
+import AnimateSpin from "../anime.spin.component";
 
 export default function ProfileSection({ users }) {
   const { profile, loadingProfile } = useProfile();
@@ -22,16 +23,16 @@ export default function ProfileSection({ users }) {
   const isSaving = isProfileExist ? loadingUpdateProfile : loadingCreateProfile;
 
   const [form, setForm] = useState({
-    username: me?.username || "",
-    email: me?.email || "",
+    username: "",
+    email: "",
     phone: 0,
-    date: null,
+    date: "",
     bio: "",
-    gender: null,
+    gender: "",
     preference_food: [],
     alergi_food: [""],
     skill: "",
-    profile: null,
+    profile: "",
     submit: false,
   });
   const [foodInput, setFoodInput] = useState("");
@@ -48,9 +49,11 @@ export default function ProfileSection({ users }) {
     if (!me || !profile) return;
 
     setForm({
+      username: me?.username || "",
+      email: me?.email || "",
       phone: profile?.phone || 0,
-      date: formatDateForInput(profile?.date) || null,
-      gender: profile?.gender || null,
+      date: formatDateForInput(profile?.date) || "",
+      gender: profile?.gender || "",
       bio: profile?.bio || "",
 
       alergi_food:
@@ -64,7 +67,7 @@ export default function ProfileSection({ users }) {
           : profile?.preference_food || [],
 
       skill: profile?.skill || "beginner",
-      profile: me?.profile || preview || null,
+      profile: me?.profile || preview || "",
     });
   }, [me, profile]);
 
@@ -74,14 +77,41 @@ export default function ProfileSection({ users }) {
     fileInputRef.current.click();
   };
 
+  const handleCancel = () => {
+    setForm({
+      username: me?.username || "",
+      email: me?.email || "",
+      phone: profile?.phone || 0,
+      date: formatDateForInput(profile?.date) || "",
+      gender: profile?.gender || "",
+      bio: profile?.bio || "",
+
+      alergi_food:
+        typeof profile?.alergi_food === "string"
+          ? JSON.parse(profile.alergi_food || "[]")
+          : profile?.alergi_food || [],
+
+      preference_food:
+        typeof profile?.preference_food === "string"
+          ? JSON.parse(profile.preference_food || "[]")
+          : profile?.preference_food || [],
+
+      skill: profile?.skill || "beginner",
+      profile: me?.profile || preview || "",
+    });
+    setPreview(`${import.meta.env.VITE_BASE_API_UPLOAD}/${me?.profile}`);
+    setFileAvatar(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleChangeFile = (e) => {
     const selectedFile = e.target.files[0];
+    console.log("SelectedFile", selectedFile);
+    console.log("preview", preview);
 
     if (!selectedFile) return;
-
-    if (preview) {
-      setPreview(null);
-    }
 
     setPreview(URL.createObjectURL(selectedFile));
 
@@ -108,6 +138,7 @@ export default function ProfileSection({ users }) {
     }
     setFileAvatar(null);
     setForm({ ...form, submit: false });
+    fileInputRef.current.value = "";
   };
 
   const addField = (fieldName) => {
@@ -179,36 +210,41 @@ export default function ProfileSection({ users }) {
           {/* HEADER */}
           <div className="flex flex-col items-center gap-4">
             {users?.profile !== "default.png" ? (
-              <div className="relative">
-                <img
-                  src={
-                    preview
-                      ? preview
-                      : form.profile
-                        ? `${upload}/${form.profile}`
-                        : "/default-avatar.png"
-                  }
-                  alt={users?.username}
-                  className="w-40 h-40 rounded-full object-cover border-4 border-orange-300 shadow-lg"
-                />
-
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/png,image/jpeg,image/jpg,image/webp"
-                  hidden
-                  onChange={handleChangeFile}
-                />
-
-                <button
-                  type="button"
-                  onClick={handleClickUpload}
-                  className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-white dark:text-white dark:bg-orange-500 shadow-md flex items-center cursor-pointer dark:hover:bg-orange-700  text-orange-500  justify-center hover:bg-orange-100 transition"
-                >
-                  {renderIcon("SquarePen", {
-                    className: "w-5 h-5",
-                  })}
-                </button>
+              <div className="relative flex items-center justify-center w-40 h-40  border-4 border-orange-300  bg-orange-300 rounded-full">
+                {loadingMe || loadingProfile ? (
+                  <AnimateSpin width={10} height={10} />
+                ) : (
+                  <>
+                    {" "}
+                    <img
+                      src={
+                        preview
+                          ? preview
+                          : form.profile
+                            ? `${upload}/${form.profile}`
+                            : "/default-avatar.png"
+                      }
+                      alt={users?.username}
+                      className="w-full h-full rounded-full object-cover shadow-lg"
+                    />
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/png,image/jpeg,image/jpg,image/webp"
+                      hidden
+                      onChange={handleChangeFile}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleClickUpload}
+                      className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-white dark:text-white dark:bg-orange-500 shadow-md flex items-center cursor-pointer dark:hover:bg-orange-700  text-orange-500  justify-center hover:bg-orange-100 transition"
+                    >
+                      {renderIcon("SquarePen", {
+                        className: "w-5 h-5",
+                      })}
+                    </button>
+                  </>
+                )}
               </div>
             ) : (
               <div className="relative">
@@ -256,7 +292,7 @@ export default function ProfileSection({ users }) {
               <input
                 type="text"
                 id="username"
-                value={form.username}
+                value={form?.username || ""}
                 onChange={(e) =>
                   setForm({ ...form, username: e.target.value, submit: true })
                 }
@@ -277,7 +313,7 @@ export default function ProfileSection({ users }) {
               <input
                 type="email"
                 id="email"
-                value={form.email}
+                value={form?.email || ""}
                 onChange={(e) =>
                   setForm({ ...form, email: e.target.value, submit: true })
                 }
@@ -298,7 +334,7 @@ export default function ProfileSection({ users }) {
               <input
                 type="number"
                 id="phone"
-                value={form.phone}
+                value={form?.phone || ""}
                 onChange={(e) =>
                   setForm({ ...form, phone: e.target.value, submit: true })
                 }
@@ -319,7 +355,7 @@ export default function ProfileSection({ users }) {
               <input
                 type="date"
                 id="date"
-                value={form.date}
+                value={form.date || ""}
                 onChange={(e) =>
                   setForm({ ...form, date: e.target.value, submit: true })
                 }
@@ -501,7 +537,9 @@ export default function ProfileSection({ users }) {
         <div className="flex justify-center items-center md:justify-end gap-4 pt-4 sticky bottom-9 w-full left-0 md:pr-5">
           <button
             type="button"
-            className="px-6 py-3 rounded-xl border dark:text-black border-slate-300 bg-white hover:bg-slate-100 transition"
+            disabled={!form.submit || isSaving}
+            onClick={handleCancel}
+            className={`px-6 py-3 rounded-xl border dark:text-black border-slate-300 bg-white hover:bg-slate-100 cursor-pointer transition ${!form.submit || isSaving ? "cursor-not-allowed disabled:opacity-75" : "cursor-pointer opacity-100"} `}
           >
             {t("common.btn_cancel")}
           </button>
@@ -509,11 +547,9 @@ export default function ProfileSection({ users }) {
           <button
             type="submit"
             disabled={!form.submit || isSaving}
-            className={`px-6 py-3 rounded-xl dark:text-neutral-950 bg-orange-500 text-white hover:bg-orange-600 transition ${!form.submit || isSaving ? "cursor-not-allowed" : "cursor-pointer"} disabled:opacity-75 enabled:opacity-100 flex items-center gap-2 justify-center`}
+            className={`px-6 py-3 rounded-xl dark:text-neutral-950 bg-orange-500 text-white hover:bg-orange-600 transition ${!form.submit || isSaving ? "cursor-not-allowed disabled:opacity-75" : "cursor-pointer opacity-100"} flex items-center gap-2 justify-center`}
           >
-            {isSaving && (
-              <span className="rounded-full w-5 h-5 border-2 border-t-transparent border-white animate-spin"></span>
-            )}
+            {isSaving && <AnimateSpin />}
 
             {isSaving ? (
               <span>{t("profile.loading_save")}</span>

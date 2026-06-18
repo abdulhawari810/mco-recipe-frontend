@@ -2,9 +2,10 @@ import { useAuth } from "@/hooks/auth/useAuth.hooks";
 import { useAllFavourite } from "@/hooks/favourites/useAllFavourite.hooks";
 import { useState, useEffect } from "react";
 import { getImagePath } from "@/utils/image.utils";
+import ButtonLoading from "./loading/button.loading";
 
 export default function Footer() {
-  const { me, logout } = useAuth();
+  const { me, logout, loadingMe } = useAuth();
   const { favourites } = useAllFavourite();
   const navigationLinks = [
     { label: "Home", href: "/" },
@@ -16,7 +17,6 @@ export default function Footer() {
     admin: { label: "Dashboard", href: "/dashboard/admin" },
     chief: { label: "My Recipes", href: "/dashboard/chef" },
   };
-
   return (
     <footer className="bg-slate-950 text-slate-200 mt-5 border-t pb-20 md:pb-0 lg:pb-0 border-slate-800">
       <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:flex lg:flex gap-10">
@@ -90,12 +90,15 @@ export default function Footer() {
                 </a>
               )}
               {me ? (
-                <button
+                <ButtonLoading
+                  loading={loadingMe}
+                  hideTitle={true}
+                  title={"Logout"}
+                  classList={
+                    "w-fit px-5 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 transition-colors duration-200 text-sm font-medium text-white"
+                  }
                   onClick={logout}
-                  className="w-fit px-5 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 transition-colors duration-200 text-sm font-medium text-white"
-                >
-                  Logout
-                </button>
+                />
               ) : (
                 <div className="flex flex-col gap-3">
                   <a

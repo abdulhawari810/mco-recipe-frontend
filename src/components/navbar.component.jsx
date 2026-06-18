@@ -5,14 +5,13 @@ import { renderIcon } from "@/utils/icons.utils";
 import ProfileMenu from "@/components/profile.component";
 import { NavLink, useNavigate } from "react-router-dom";
 import { getImagePath } from "@/utils/image.utils";
+import ButtonLoading from "./loading/button.loading";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { me, logout, loading } = useAuth();
+  const { me, logout, loadingMe } = useAuth();
   const { favourites } = useAllFavourite();
   const [showNav, setShowNav] = useState(true);
-
-  const nav = useNavigate();
 
   const lastScrollY = useRef(0);
 
@@ -47,7 +46,7 @@ const Navbar = () => {
         className={`bg-white dark:bg-neutral-900 shadow-lg fixed top-0 transition-transform duration-300 left-0 z-50 min-w-full h-16 lg:h-20 ${showNav ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="md:max-w-7xl mx-auto px-4 items-center sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center">
             {/* Logo */}
             <div className="flex shrink-0">
               <div className="flex items-center justify-center">
@@ -126,7 +125,7 @@ const Navbar = () => {
                       name={me?.username}
                       role={me?.role}
                       logoutUser={logout}
-                      isLoading={loading}
+                      isLoading={loadingMe}
                     />
                   ) : (
                     <>
@@ -249,15 +248,11 @@ const Navbar = () => {
                 >
                   Settings
                 </NavLink>
-                <NavLink
-                  onClick={() => {
-                    logout.mutate();
-                    setIsOpen(false);
-                  }}
-                  className="text-red-500 px-3 bg-red-500/5 py-2 rounded-md text-lg font-medium transition mt-10"
-                >
-                  Logout
-                </NavLink>
+                <ButtonLoading
+                  loading={loadingMe}
+                  title={"Logout"}
+                  onClick={logout}
+                />
               </>
             )}
             {!me && (

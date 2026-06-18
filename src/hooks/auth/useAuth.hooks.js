@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export const useAuth = (query) => {
-  const nav = useNavigate();
   const queryClient = useQueryClient();
+
+  const isLogin = localStorage.getItem("isLogin") === "true";
 
   // 🔹 GET CURRENT USER
   const {
@@ -17,6 +18,7 @@ export const useAuth = (query) => {
   } = useQuery({
     queryKey: AuthKeys.all(),
     queryFn: () => me(query),
+    enabled: isLogin,
 
     // optional
     retry: false,
@@ -27,7 +29,6 @@ export const useAuth = (query) => {
     mutationFn: logoutUser,
 
     onSuccess: (msg) => {
-      // hapus semua cache auth
       queryClient.removeQueries({
         queryKey: AuthKeys.all(),
       });
@@ -35,10 +36,10 @@ export const useAuth = (query) => {
         queryKey: usersKeys.all(),
       });
 
-      // optional: hapus semua cache
       queryClient.clear();
 
       toast.success(msg?.response?.data?.message || "Logout Berhasil");
+      localStorage.setItem("isLogin", "false");
     },
 
     onError: (error) => {

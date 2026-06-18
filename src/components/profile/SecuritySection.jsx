@@ -156,7 +156,7 @@ export default function SecuritySection() {
             </div>
             <div className="flex items-center justify-end w-full">
               <button
-                className="p-2.5 rounded-full outline outline-slate-500 dark:outline-orange-500 dark:text-orange-500 flex items-center justify-center text-xs md:text-md cursor-pointer text-slate-600"
+                className="p-2.5 rounded-full outline outline-slate-500 dark:outline-orange-500 dark:text-orange-500 flex items-center justify-center text-xs md:text-lg md:p-4 cursor-pointer text-slate-600"
                 onClick={() => {
                   setShowModal(true);
                   setModalType("password");

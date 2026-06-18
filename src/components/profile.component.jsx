@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { renderIcon } from "@/utils/icons.utils";
 import { NavLink, useNavigate } from "react-router-dom";
-import ButtonLoading from "@/components/loading/button.loading";
+import AnimateSpin from "./anime.spin.component";
 
 export default function ProfileMenu({
   profile,
@@ -87,11 +87,18 @@ export default function ProfileMenu({
             </ul>
 
             <div className="border-t mt-2 pt-2">
-              <ButtonLoading
-                loading={isLoading}
-                title={"Logout"}
+              <button
                 onClick={logoutUser}
-              />
+                className="bg-red-500 w-full font-semibold py-2 rounded-lg transition duration-200 flex items-center gap-3 justify-center cursor-pointer text-white"
+              >
+                {isLoading ? (
+                  <>
+                    <AnimateSpin />
+                  </>
+                ) : (
+                  <span>Logout</span>
+                )}
+              </button>
             </div>
           </div>
         )}

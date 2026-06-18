@@ -1,6 +1,7 @@
 import { renderIcon } from "@/utils/icons.utils";
 import { useState } from "react";
 import { useAuth } from "@/hooks/auth/useAuth.hooks";
+import AnimateSpin from "./anime.spin.component";
 
 const Card = ({
   image,
@@ -13,6 +14,7 @@ const Card = ({
   onFavouriteClick,
   onFavouriteSaved,
   onLoadingFavourite,
+  onLoadingDelete,
   onEditClick,
   onDeleteClick,
   onAcceptClick,
@@ -21,8 +23,16 @@ const Card = ({
   profile,
   category,
   author,
+  badgehidden,
+  itemId,
 }) => {
-  const { user } = useAuth();
+  const { me } = useAuth();
+
+  let saved = null;
+  if (me?.role !== "chief") {
+    saved = onFavouriteSaved.find((f) => f.recipeId === itemId);
+  }
+
   return (
     <div
       className="bg-white dark:bg-neutral-800 break-inside-avoid w-40 sm:w-44 md:w-40 lg:w-72 rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow relative"
@@ -101,7 +111,9 @@ const Card = ({
                   : badge === "Ditolak"
                     ? renderIcon("X", { className: "w-5 h-5" })
                     : null}
-            <span>{badge}</span>
+            <span className={`${badgehidden ? "hidden" : "flex"}`}>
+              {badge}
+            </span>
           </div>
         )}
         {onDeleteClick && (
@@ -109,20 +121,24 @@ const Card = ({
             className="absolute flex items-center z-10 p-2 bg-red-500 hover:bg-red-700 cursor-pointer rounded-bl-lg justify-center text-white top-0 right-0"
             onClick={onDeleteClick}
           >
-            {renderIcon("Trash", { className: "w-6 h-6" })}
+            {onLoadingDelete ? (
+              <AnimateSpin />
+            ) : (
+              <div>{renderIcon("Trash", { className: "w-6 h-6" })}</div>
+            )}
           </button>
         )}
         {onFavouriteClick && (
           <button
-            className={`flex items-center z-20 p-2 bg-gray-900 hover:bg-orange-500 cursor-pointer rounded-bl-lg justify-center  top-0 right-0 ${onFavouriteSaved ? " text-orange-500" : " text-white"}`}
+            className={`flex items-center group z-20 p-2 bg-gray-900 cursor-pointer rounded-bl-lg justify-center  top-0 right-0 ${saved ? " text-orange-500" : " text-white  hover:text-orange-500"}`}
             onClick={onFavouriteClick}
           >
             {onLoadingFavourite ? (
-              <span className="w-5 h-5 rounded-full border-2 border-t-transparent border-white animate-spin"></span>
+              <AnimateSpin />
             ) : (
               <div>
                 {renderIcon("Heart", {
-                  className: `w-6 h-6 ${onFavouriteSaved ? "fill-orange-500" : ""}`,
+                  className: `w-6 h-6 ${saved ? "fill-orange-500" : "group-hover:fill-orange-500"}`,
                 })}
               </div>
             )}

@@ -11,6 +11,100 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAllCategories } from "@/hooks/categories/useAllCategories.hooks";
+
+const selectTriggerClass =
+  "w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-neutral-800 shadow-sm transition " +
+  "focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-white " +
+  "dark:border-neutral-800 dark:bg-neutral-900 dark:text-orange-500 dark:focus:ring-orange-500 dark:focus:ring-offset-neutral-950";
+
+const selectContentClass =
+  "rounded-lg border border-neutral-200 bg-white text-neutral-800 shadow-lg " +
+  "dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100";
+
+const selectLabelClass =
+  "px-2 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-orange-500";
+
+const selectItemClass =
+  "cursor-pointer rounded-md px-3 py-2 text-neutral-700 outline-none transition " +
+  "focus:bg-orange-500 focus:text-white " +
+  "data-[highlighted]:bg-orange-500 data-[highlighted]:text-white " +
+  "data-[state=checked]:bg-orange-500 data-[state=checked]:text-white " +
+  "dark:text-neutral-200 dark:focus:bg-orange-500 dark:focus:text-neutral-950 " +
+  "dark:data-[highlighted]:bg-orange-500 dark:data-[highlighted]:text-neutral-950 " +
+  "dark:data-[state=checked]:bg-orange-500 dark:data-[state=checked]:text-neutral-950";
+
+const levelCook = [
+  {
+    value: "all",
+    label: "Semua Tingkatan",
+  },
+  {
+    value: "easy",
+    label: "Mudah",
+  },
+  {
+    value: "medium",
+    label: "Sedang",
+  },
+  {
+    value: "extreme",
+    label: "Sulit",
+  },
+];
+
+const levelCookLabel = {
+  all: "Semua Tingkatan",
+  easy: "Mudah",
+  medium: "Sedang",
+  extreme: "Sulit",
+};
+
+const timeCook = [
+  {
+    value: "all",
+    label: "Semua Waktu",
+  },
+  {
+    value: "10",
+    label: "10 Menit",
+  },
+  {
+    value: "20",
+    label: "20 Menit",
+  },
+  {
+    value: "30",
+    label: "30 Menit",
+  },
+  {
+    value: "50",
+    label: "50 Menit",
+  },
+  {
+    value: "60",
+    label: "1 Jam",
+  },
+  {
+    value: "100",
+    label: "100 Menit",
+  },
+  {
+    value: "120",
+    label: "2 Jam",
+  },
+];
+
+const timeCookLabel = {
+  all: "Semua Waktu",
+  10: "10 Menit",
+  20: "20 Menit",
+  30: "30 Menit",
+  50: "50 Menit",
+  60: "1 Jam",
+  100: "100 Menit",
+  120: "2 Jam",
+};
 
 export default function Header({
   onChange,
@@ -21,27 +115,7 @@ export default function Header({
   loading,
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const selectTriggerClass =
-    "w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-neutral-800 shadow-sm transition " +
-    "focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-white " +
-    "dark:border-neutral-800 dark:bg-neutral-900 dark:text-orange-500 dark:focus:ring-orange-500 dark:focus:ring-offset-neutral-950";
-
-  const selectContentClass =
-    "rounded-lg border border-neutral-200 bg-white text-neutral-800 shadow-lg " +
-    "dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100";
-
-  const selectLabelClass =
-    "px-2 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-orange-500";
-
-  const selectItemClass =
-    "cursor-pointer rounded-md px-3 py-2 text-neutral-700 outline-none transition " +
-    "focus:bg-orange-500 focus:text-white " +
-    "data-[highlighted]:bg-orange-500 data-[highlighted]:text-white " +
-    "data-[state=checked]:bg-orange-500 data-[state=checked]:text-white " +
-    "dark:text-neutral-200 dark:focus:bg-orange-500 dark:focus:text-neutral-950 " +
-    "dark:data-[highlighted]:bg-orange-500 dark:data-[highlighted]:text-neutral-950 " +
-    "dark:data-[state=checked]:bg-orange-500 dark:data-[state=checked]:text-neutral-950";
+  const { categories, loadingCategories } = useAllCategories();
 
   return (
     <>
@@ -64,9 +138,12 @@ export default function Header({
         btnConfirmClass="bg-orange-500 dark:text-black text-white px-4 py-2 rounded-lg hover:bg-orange-600 cursor-pointer transition"
         btnCancelClass="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 cursor-pointer transition"
         btnCancel={() => {
+          if (!filterValue || Object.values(filterValue).every((v) => !v)) {
+            setIsModalOpen(false);
+          }
           onFilterChange?.({ category: "", difficulty: "", time: "" });
-          onFilterChangeFinal?.({ category: "", difficulty: "", time: "" });
           setIsModalOpen(false);
+          onFilterChangeFinal?.({ category: "", difficulty: "", time: "" });
         }}
         btnConfirm={() => {
           onFilterChangeFinal?.(filterValue);
@@ -75,7 +152,11 @@ export default function Header({
       >
         {/* KATEGORI */}
         <Select
-          value={filterValue?.category || ""}
+          value={
+            filterValue?.category === "all"
+              ? "Semua Kategori"
+              : filterValue?.category || ""
+          }
           onValueChange={(value) =>
             onFilterChange?.({ ...filterValue, category: value })
           }
@@ -90,22 +171,25 @@ export default function Header({
               <SelectItem className={selectItemClass} value="all">
                 Semua Kategori
               </SelectItem>
-              <SelectItem className={selectItemClass} value="makanan">
-                Makanan
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="minuman">
-                Minuman
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="dessert">
-                Dessert
-              </SelectItem>
+              {Array.isArray(categories) &&
+                categories.map((item, index) => {
+                  return (
+                    <SelectItem
+                      className={selectItemClass}
+                      value={item.name}
+                      key={index}
+                    >
+                      {item.name}
+                    </SelectItem>
+                  );
+                })}
             </SelectGroup>
           </SelectContent>
         </Select>
 
         {/* TINGKAT KESULITAN */}
         <Select
-          value={filterValue?.difficulty || ""}
+          value={levelCookLabel[filterValue?.difficulty] || ""}
           onValueChange={(value) =>
             onFilterChange?.({ ...filterValue, difficulty: value })
           }
@@ -120,28 +204,24 @@ export default function Header({
                 Tingkat Memasak
               </SelectLabel>
 
-              <SelectItem className={selectItemClass} value="all">
-                Semua Tingkatan
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="easy">
-                Mudah
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="medium">
-                Sedang
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="hard">
-                Sulit
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="extreme">
-                Sangat Sulit
-              </SelectItem>
+              {levelCook.map((item) => {
+                return (
+                  <SelectItem
+                    className={selectItemClass}
+                    value={item.value}
+                    key={item.value}
+                  >
+                    {item.label}
+                  </SelectItem>
+                );
+              })}
             </SelectGroup>
           </SelectContent>
         </Select>
 
         {/* WAKTU MEMASAK */}
         <Select
-          value={filterValue?.time || ""}
+          value={timeCookLabel[filterValue?.time] || ""}
           onValueChange={(value) =>
             onFilterChange?.({ ...filterValue, time: value })
           }
@@ -152,28 +232,17 @@ export default function Header({
 
           <SelectContent className={selectContentClass}>
             <SelectGroup>
-              <SelectLabel className={selectLabelClass}>
-                Waktu Memasak
-              </SelectLabel>
-
-              <SelectItem className={selectItemClass} value="all">
-                Semua Waktu
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="10">
-                10 Menit
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="20">
-                20 Menit
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="30">
-                30 Menit
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="50">
-                50 Menit
-              </SelectItem>
-              <SelectItem className={selectItemClass} value="100">
-                100 Menit
-              </SelectItem>
+              {timeCook.map((item) => {
+                return (
+                  <SelectItem
+                    className={selectItemClass}
+                    value={item.value}
+                    key={item.value}
+                  >
+                    {item.label}
+                  </SelectItem>
+                );
+              })}
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -187,7 +256,7 @@ export default function Header({
           />
           <div className="absolute top-0 left-0 w-full h-full bg-black/50"></div>
         </div>
-        <div className="absolute w-full flex-col flex items-center px-10 justify-center rounded-2xl">
+        <div className="absolute w-full flex-col flex items-center px-7 md:px-10 justify-center rounded-2xl">
           <div className="text-center text-white mb-8">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">
               Recipe Search
@@ -196,25 +265,29 @@ export default function Header({
               Discover delicious recipes
             </p>
           </div>
-          <form className="w-full gap-4 relative md:flex md:w-52 lg:w-52 lg:min-w-150 md:min-w-100 grid grid-cols-3 min-w-full items-center justify-center">
-            <div className="flex items-center justify-center gap-2 col-span-2 min-w-full w-full h-14 md:w-96 lg:w-1/2 relative">
+          <form className="w-full gap-4 relative flex-wrap flex  min-w-full items-center justify-center">
+            <div className="flex items-center justify-center gap-2 h-14 relative">
               <input
                 type="text"
                 placeholder="Search recipes..."
-                className="w-full min-w-full md:w-120 lg:w-140 h-14 rounded-lg bg-white shadow-md dark:bg-neutral-950 outline-none p-4 text-md pr-15"
+                className="w-55  md:w-120 lg:w-140 h-14 rounded-lg bg-white shadow-md dark:bg-neutral-950 outline-none p-4 text-md pl-10 pr-10"
                 value={value}
+                id="search"
                 onChange={onChange}
               />
+              <span className="absolute left-2.5">
+                {renderIcon("Search", { className: "w-5 h-5" })}
+              </span>
               {loading && (
                 <span className="absolute right-5 animate-spin border-3 border-t-transparent w-5 h-5 rounded-full border-orange-500"></span>
               )}
             </div>
             <div
-              className={`flex cursor-pointer p-4  rounded-lg items-center justify-center ${!filterValue || Object.values(filterValue).every((v) => !v) ? "bg-white text-black dark:bg-neutral-950 dark:text-white" : "bg-orange-500 dark:text-black text-white"}`}
+              className={`flex cursor-pointer px-5 h-14 md:p-4  rounded-lg items-center justify-center ${!filterValue || Object.values(filterValue).every((v) => !v) ? "bg-white text-black dark:bg-neutral-950 dark:text-white" : "bg-orange-500 dark:text-black text-white"}`}
               onClick={() => setIsModalOpen(!isModalOpen)}
             >
               {renderIcon("Filter", {
-                className: "w-6 h-6",
+                className: "w-5 h-5",
               })}
             </div>
           </form>

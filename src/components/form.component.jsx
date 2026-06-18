@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import AnimateSpin from "./anime.spin.component";
 
 const FormComponent = ({
   initialData,
@@ -7,49 +8,62 @@ const FormComponent = ({
   defaultForm = {},
   onClose,
   onSubmit,
+  loadingState,
   title,
 }) => {
   const [form, setForm] = useState(defaultForm);
 
   useEffect(() => {
-    if (initialData) {
-      const parsed = { ...initialData };
+    if (!showForm) return;
 
-      fields.forEach((field) => {
-        if (
-          field.type === "multi-text" &&
-          typeof parsed[field.name] === "string"
-        ) {
-          try {
-            parsed[field.name] = JSON.parse(parsed[field.name]);
-          } catch {
-            parsed[field.name] = [""];
-          }
-        }
-      });
-
-      setForm((prev) => ({
-        ...prev,
-        ...parsed,
-      }));
+    if (!initialData) {
+      setForm(defaultForm);
+      return;
     }
-  }, [initialData, fields]);
 
-  // handle basic input
+    const parsed = { ...initialData };
+
+    fields.forEach((field) => {
+      if (
+        field.type === "multi-text" &&
+        typeof parsed[field.name] === "string"
+      ) {
+        try {
+          parsed[field.name] = JSON.parse(parsed[field.name]);
+        } catch {
+          parsed[field.name] = [""];
+        }
+      }
+    });
+
+    setForm({
+      ...defaultForm,
+      ...parsed,
+    });
+  }, [initialData, showForm]);
+
+  const inputClass =
+    "w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-orange-500";
+
+  const labelClass =
+    "mb-2 block text-sm font-semibold text-neutral-700 dark:text-neutral-200";
+
+  const fieldWrapperClass = "w-full space-y-1";
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-  // handle close button
+
   const handleClose = () => {
-    setForm(defaultForm); // reset semua field
-    onClose(); // tutup modal
+    setForm(defaultForm);
+    onClose?.();
   };
 
   const addField = (fieldName) => {
     setForm((prev) => ({
       ...prev,
-      [fieldName]: [...prev[fieldName], ""],
+      [fieldName]: [...(prev[fieldName] || []), ""],
     }));
   };
 
@@ -61,7 +75,7 @@ const FormComponent = ({
   };
 
   const handleMultiChange = (fieldName, index, value) => {
-    const updated = [...form[fieldName]];
+    const updated = [...(form[fieldName] || [])];
     updated[index] = value;
 
     setForm((prev) => ({
@@ -70,82 +84,68 @@ const FormComponent = ({
     }));
   };
 
-  const handleMultipleImages = (e) => {
-    setForm((prev) => ({
-      ...prev,
-      images: Array.from(e.target.files),
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(form);
-    setForm(defaultForm);
-    onClose();
+
+    const success = await onSubmit?.(form);
+
+    if (success !== false) {
+      setForm(defaultForm);
+    }
   };
 
-  // console.log("form", initialData["username"]);
+  if (!showForm) return null;
 
-  // console.log("form", JSON.stringify(InitialForm));
+  console.log(loadingState);
 
   return (
-    <main
-      className={`fixed top-0 left-0 z-1000 bg-black/30 w-full h-screen p-10 ${showForm ? "scale-100" : "scale-0"}`}
-    >
+    <main className="fixed inset-0 z-60 flex items-center justify-center bg-black/50 p-3 sm:p-5 lg:p-8">
       <form
         onSubmit={handleSubmit}
-        className="relative flex flex-col gap-6 p-6 py-8 w-full h-full bg-white rounded-2xl shadow-sm"
+        className="flex max-h-[95vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-neutral-950"
       >
-        <h1 className="w-full border-b border-slate-400 pb-5 text-xl font-bold">
-          {initialData?.title || title || "Update Recipes"}
-        </h1>
-        <div className="flex flex-col gap-4 overflow-y-scroll p-2 min-h-0 h-100">
-          {/* Top Inputs */}
-          <div className="grid grid-cols-4 gap-4">
+        {/* Header */}
+        <div className="border-b border-neutral-200 px-4 py-4 sm:px-6 dark:border-neutral-800">
+          <h1 className="text-lg font-bold text-neutral-900 sm:text-xl dark:text-neutral-100">
+            {initialData?.title || title || "Update Recipes"}
+          </h1>
+          <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+            Lengkapi data dengan benar sebelum menyimpan perubahan.
+          </p>
+        </div>
+
+        {/* Body */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-6">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
             {fields.map((field) => {
-              // INPUT
-              if (field.type === "text" || field.type === "email") {
+              if (
+                field.type === "text" ||
+                field.type === "email" ||
+                field.type === "number"
+              ) {
                 return (
-                  <div key={field.name} className="w-full h-full">
-                    <label className="font-semibold">{field.label}</label>
-
+                  <div key={field.name} className={fieldWrapperClass}>
+                    <label className={labelClass}>{field.label}</label>
                     <input
                       type={field.type}
                       name={field.name}
                       value={form[field.name] || ""}
                       onChange={handleChange}
-                      className="input"
+                      className={inputClass}
                     />
                   </div>
                 );
               }
-              // NUMBER
-              if (field.type === "number") {
-                return (
-                  <div key={field.name} className="w-full h-full">
-                    <label className="font-semibold">{field.label}</label>
 
-                    <input
-                      type={field.type}
-                      name={field.name}
-                      value={form[field.name] || ""}
-                      onChange={handleChange}
-                      className="input"
-                    />
-                  </div>
-                );
-              }
-              // SELECT
               if (field.type === "select") {
                 return (
-                  <div key={field.name}>
-                    <label>{field.label}</label>
-
+                  <div key={field.name} className={fieldWrapperClass}>
+                    <label className={labelClass}>{field.label}</label>
                     <select
                       name={field.name}
                       value={form[field.name] || ""}
                       onChange={handleChange}
-                      className="input"
+                      className={inputClass}
                     >
                       <option value="">Pilih {field.label}</option>
                       {field.options.map((option) => (
@@ -158,44 +158,70 @@ const FormComponent = ({
                 );
               }
 
-              // MULTI TEXT
+              if (field.type === "textarea") {
+                return (
+                  <div
+                    key={field.name}
+                    className="w-full space-y-1 md:col-span-2 xl:col-span-4"
+                  >
+                    <label className={labelClass}>{field.label}</label>
+                    <textarea
+                      name={field.name}
+                      value={form[field.name] || ""}
+                      onChange={handleChange}
+                      className={`${inputClass} min-h-40 resize-none`}
+                    />
+                  </div>
+                );
+              }
+
               if (field.type === "multi-text") {
                 return (
-                  <div key={field.name}>
-                    <p className="font-semibold">
-                      {field.label} ({form[field.name]?.length})
-                    </p>
+                  <div
+                    key={field.name}
+                    className="w-full space-y-3 md:col-span-2 xl:col-span-4"
+                  >
+                    <div>
+                      <p className="text-sm font-semibold text-neutral-700 dark:text-neutral-200">
+                        {field.label}
+                      </p>
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                        Total item: {form[field.name]?.length || 0}
+                      </p>
+                    </div>
 
-                    {Array.isArray(form[field.name]) &&
-                      form[field.name].map((item, index) => (
-                        <div key={index} className="flex gap-2 mb-2">
-                          <input
-                            type="text"
-                            value={item}
-                            onChange={(e) =>
-                              handleMultiChange(
-                                field.name,
-                                index,
-                                e.target.value,
-                              )
-                            }
-                            className="input"
-                          />
+                    <div className="space-y-2">
+                      {Array.isArray(form[field.name]) &&
+                        form[field.name].map((item, index) => (
+                          <div key={index} className="flex gap-2">
+                            <input
+                              type="text"
+                              value={item}
+                              onChange={(e) =>
+                                handleMultiChange(
+                                  field.name,
+                                  index,
+                                  e.target.value,
+                                )
+                              }
+                              className={inputClass}
+                            />
 
-                          <button
-                            type="button"
-                            onClick={() => removeField(field.name, index)}
-                            className="text-red-500"
-                          >
-                            ✕
-                          </button>
-                        </div>
-                      ))}
+                            <button
+                              type="button"
+                              onClick={() => removeField(field.name, index)}
+                              className="shrink-0 rounded-xl border border-red-200 px-4 text-sm font-semibold text-red-500 transition hover:bg-red-50 dark:border-red-500/30 dark:hover:bg-red-500/10"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ))}
+                    </div>
 
                     <button
                       type="button"
                       onClick={() => addField(field.name)}
-                      className="text-orange-500"
+                      className="rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-600"
                     >
                       + Add {field.label}
                     </button>
@@ -203,40 +229,38 @@ const FormComponent = ({
                 );
               }
 
-              // TEXTAREA
-              if (field.type === "textarea") {
-                return (
-                  <div key={field.name}>
-                    <label>{field.label}</label>
-
-                    <textarea
-                      name={field.name}
-                      value={form[field.name] || ""}
-                      onChange={handleChange}
-                      className="input min-h-40 py-3 w-full resize-none"
-                    />
-                  </div>
-                );
-              }
+              return null;
             })}
           </div>
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 left-0 w-full bg-white pt-4 flex justify-end gap-2 border-slate-400 border-t">
+        <div className="flex flex-col-reverse gap-3 border-t border-neutral-200 bg-white px-4 py-4 sm:flex-row sm:justify-end sm:px-6 dark:border-neutral-800 dark:bg-neutral-950">
           <button
             type="button"
             onClick={handleClose}
-            className="px-4 py-2 rounded-lg border border-slate-300 hover:bg-slate-100"
+            className="rounded-xl border border-neutral-300 px-5 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-100 dark:border-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-900"
           >
             Cancel
           </button>
 
           <button
             type="submit"
-            className="px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition"
+            disabled={loadingState}
+            className="rounded-xl bg-orange-500 flex items-center justify-center px-5 py-3 text-sm font-semibold text-white transition hover:bg-orange-600"
           >
-            {title || "Update Recipe"}
+            {loadingState ? (
+              <div className="flex items-center gap-5 md:gap-2">
+                <AnimateSpin />
+                <span>
+                  {title === "Tambah Resep"
+                    ? "Sedang Menambah..."
+                    : "Sedang Mengupdate..."}
+                </span>
+              </div>
+            ) : (
+              <span> {title || "Update Recipe"}</span>
+            )}
           </button>
         </div>
       </form>

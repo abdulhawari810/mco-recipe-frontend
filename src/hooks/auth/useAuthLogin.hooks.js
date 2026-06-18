@@ -15,6 +15,7 @@ export const useLogin = () => {
 
     onSuccess: (res) => {
       toast.success(res?.data?.message || "Login berhasil");
+      localStorage.setItem("isLogin", "true");
       queryClient.invalidateQueries(AuthKeys.all());
     },
 

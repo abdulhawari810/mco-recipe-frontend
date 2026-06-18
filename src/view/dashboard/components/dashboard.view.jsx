@@ -3,12 +3,15 @@ import { renderIcon } from "@/utils/icons.utils";
 import { useAuth } from "@/hooks/auth/useAuth.hooks";
 import Card from "@/components/card.component";
 import { getImagePath } from "@/utils/image.utils";
+import CardLoading from "@/components/loading/card.loading";
+import NoDataFound from "@/components/no_data_found.component";
 
 export default function DashboardView({
   recipes,
   count = 0,
+  loadingState,
   role,
-  countAllRecipes = 0,
+  countAllRecipes = recipes?.length || 0,
 }) {
   const { me } = useAuth();
   const nav = useNavigate();
@@ -177,42 +180,47 @@ export default function DashboardView({
             </div>
           </div>
 
-          <div className="columns-2 sm:columns-2 xl:flex xl:flex-wrap xl:items-start xl:justify-between xl:space-y-0 xl:gap-5 w-full space-y-5">
-            {Array.isArray(recipes) && recipes.length > 0 ? (
-              recipes.map((item) => {
+          <div
+            className={`${recipes?.length > 0 ? "columns-2" : "flex"} mt-5 sm:flex justify-between items-start sm:flex-wrap w-full space-y-4 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8`}
+          >
+            {loadingState && !recipes ? (
+              Array.from({ length: 12 }).map((_, i) => {
+                return <CardLoading key={i} />;
+              })
+            ) : recipes?.length > 0 ? (
+              recipes?.map((item) => {
                 return (
-                  <div key={item.id} className="break-inside-avoid mb-5">
-                    <Card
-                      title={item.title}
-                      description={item.description}
-                      image={
-                        item.image ||
-                        getImagePath(`food/item.image`) ||
-                        getImagePath("food/food1.jpg")
-                      }
-                      profile={item.recipes_authors?.profile}
-                      author={item.recipes_authors?.username}
-                      difficulty={item.difficulty}
-                      time={item.time}
-                      category={item.category.name}
-                      onCardClick={() => nav(`/recipes/detail/${item.id}`)}
-                      badge={
-                        item.status === "pending"
-                          ? "Pending"
-                          : item.status === "accept"
-                            ? "Disetujui"
-                            : item.status === "reject"
-                              ? "Ditolak"
-                              : "Draft"
-                      }
-                    />
-                  </div>
+                  <Card
+                    title={item.title}
+                    description={item.description}
+                    image={
+                      item.image ||
+                      getImagePath(`food/item.image`) ||
+                      getImagePath("food/food1.jpg")
+                    }
+                    profile={item.recipes_authors?.profile}
+                    author={item.recipes_authors?.username}
+                    difficulty={item.difficulty}
+                    time={item.time}
+                    itemId={item.recipeId}
+                    category={item.category.name}
+                    onCardClick={() => nav(`/recipes/detail/${item.id}`)}
+                    badge={
+                      item.status === "pending"
+                        ? "Pending"
+                        : item.status === "accept"
+                          ? "Disetujui"
+                          : item.status === "reject"
+                            ? "Ditolak"
+                            : "Draft"
+                    }
+                  />
                 );
               })
             ) : (
-              <h1 className="text-xl sm:text-2xl font-bold text-black">
-                Data tidak ditemukan
-              </h1>
+              <div>
+                <NoDataFound error={`Tidak Ada Data Ditemukan`} />
+              </div>
             )}
           </div>
         </div>

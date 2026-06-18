@@ -25,7 +25,7 @@ export const useCreateRecipes = () => {
 
   return {
     createRecipes: createRecipeMutate,
-    loading: isPending,
+    loadingCreateRecipes: isPending,
     error,
   };
 };

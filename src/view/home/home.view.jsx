@@ -8,11 +8,14 @@ import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import CardLoading from "@/components/loading/card.loading";
 import Pagination from "@/components/pagination.components";
+import { useAllFavourite } from "@/hooks/favourites/useAllFavourite.hooks";
+import NoDataFound from "@/components/no_data_found.component";
 
 export default function HomeView() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [filter, setFilters] = useState({});
+  const { favourites } = useAllFavourite();
   const [filterdebounced, setFilterDebounced] = useState({});
   const [page, setPage] = useState(1);
   const [LoadingSearch, setLoadingSearch] = useState(false);
@@ -91,6 +94,7 @@ export default function HomeView() {
                   key={item.id}
                   title={item.title}
                   description={item.description}
+                  itemId={item.id}
                   image={
                     item.image ||
                     getImagePath(`food/item.image`) ||
@@ -100,6 +104,7 @@ export default function HomeView() {
                   author={item.recipe?.username}
                   difficulty={item.difficulty}
                   time={item.time}
+                  onFavouriteSaved={favourites}
                   category={item.category?.name}
                   onCardClick={() => nav(`/recipes/detail/${item.id}`)}
                   onFavouriteClick={(e) => {
@@ -110,10 +115,13 @@ export default function HomeView() {
                 />
               );
             })
+          ) : debouncedSearchTerm ? (
+            <NoDataFound
+              type={"search"}
+              error={`Resep ${debouncedSearchTerm} tidak ditemukan`}
+            />
           ) : (
-            <h1 className="text-2xl font-bold text-black">
-              Data tidak ditemukan
-            </h1>
+            <NoDataFound error={`Tidak Ada Data Ditemukan`} />
           )}
         </div>
 
