@@ -156,10 +156,7 @@ export default function RecipesView() {
                   onFavouriteSaved={favourites}
                   onFavouriteClick={(e) => {
                     e.stopPropagation();
-                    if (saved) {
-                      toast.error("Resep ini sudah disimpan!");
-                      return;
-                    }
+
                     createFavourite(item.id);
                   }}
                   onLoadingFavourite={loadingFavouriteId === item.id}
