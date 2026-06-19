@@ -8,8 +8,8 @@ import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // feature
-import ProtectedRoute from "@/features/protectedRoute";
-import ProtectedRouteUsers from "@/features/protectedRouteUsers";
+import ProtectedRoute from "@/protected/protectedRoute";
+import ProtectedRouteUsers from "@/protected/protectedRouteUsers";
 
 import AppLayout from "@/layout/app.layout";
 import DashboardLayout from "@/layout/dashboard.layout";
