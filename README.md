@@ -36,9 +36,11 @@ Project ini masih terus dikembangkan dan masih memiliki beberapa fitur yang belu
 
 ## Installation
 
+```
 git clone https://github.com/abdulhawari810/mco-recipe-frontend.git
 npm install
 npm run dev
+```
 
 ## Environment Variables
 
@@ -50,7 +52,7 @@ VITE_BASE_API_UPLOAD
 
 ## Project Structure
 
-```text
+```
 src/
 ├── API/
 ├── assets/
