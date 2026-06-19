@@ -50,8 +50,6 @@ VITE_BASE_API_UPLOAD
 
 ## Project Structure
 
-## Project Structure
-
 ```text
 src/
 ├── API/
