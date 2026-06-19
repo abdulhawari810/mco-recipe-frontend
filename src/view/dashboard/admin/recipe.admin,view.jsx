@@ -9,6 +9,7 @@ import Filter from "@/components/filter.component";
 import { useUpdateStatusRecipes } from "@/hooks/recipes/useUpdateStatusRecipes.hooks";
 import { useAllRecipesForAdmin } from "@/hooks/recipes/useAllRecipesForAdmin.hooks";
 import { getImagePath } from "@/utils/image.utils";
+import CardLoading from "@/components/loading/card.loading";
 
 const statusButtons = [
   {
@@ -112,23 +113,23 @@ export default function RecipeAdminView() {
 
   const { updateStatusRecipe } = useUpdateStatusRecipes();
 
-  const { recipesAdmin, loading } = useAllRecipesForAdmin({
+  const { recipesAdmin, loadingRecipesAdmin } = useAllRecipesForAdmin({
     search: debouncedSearchTerm,
     status: selectedBtnStatus,
   });
 
   return (
     <>
-      <main className="flex flex-col bg-white rounded-2xl w-full p-5 gap-5">
-        <h1 className="font-bold text-2xl">Daftar Semua Resep</h1>
-        <div className="grid grid-cols-2 bg-white w-full">
+      <main className="flex flex-col bg-white rounded-2xl w-full md:p-5 gap-5">
+        <h1 className="font-bold text-2xl p-5 md:p-0">Daftar Semua Resep</h1>
+        <div className="md:grid md:grid-cols-2 flex flex-col bg-white w-full">
           <Filter
             selectDefault={false}
             titleSearch="Cari Resep berdasarkan author, judul, atau status..."
             onChange={(filters) => setDebouncedSearchTerm(filters.search)}
             value={debouncedSearchTerm}
           />
-          <div className="flex w-full items-center justify-end gap-2">
+          <div className="flex w-full items-center p-5 md:p-0 md:overflow-visible overflow-scroll justify-between md:justify-end gap-2">
             {statusButtons.map((btn) => {
               const isActive = selectedBtnStatus === btn.value;
               const colors = colorClasses[btn.color];
@@ -164,7 +165,8 @@ export default function RecipeAdminView() {
             })}
           </div>
         </div>
-        <div className="flex flex-wrap w-full gap-5 mt-5 gap-y-7">
+
+        {/* <div className="flex flex-wrap w-full gap-5 p-5 md:p-0 mt-5 gap-y-7">
           {Array.isArray(recipesAdmin?.data) &&
           recipesAdmin?.data?.length > 0 ? (
             recipesAdmin?.data?.map((item) => {
@@ -225,6 +227,81 @@ export default function RecipeAdminView() {
             })
           ) : (
             <NoDataFound error={"Data resep tidak ditemukan"} />
+          )}
+        </div> */}
+
+        {/* Card Grid */}
+        <div
+          className={`${loadingRecipesAdmin || recipesAdmin?.data?.length > 0 ? "columns-2" : "flex"} justify-between p-5 md:p-0 md:columns-3 items-start w-full space-y-4 md:space-y-5`}
+        >
+          {loadingRecipesAdmin && !recipesAdmin?.data ? (
+            Array.from({ length: 12 }).map((_, i) => {
+              return <CardLoading key={i} />;
+            })
+          ) : recipesAdmin?.data?.length > 0 ? (
+            recipesAdmin?.data.map((item) => {
+              return (
+                <Card
+                  key={item.id}
+                  title={item.title}
+                  description={item.description}
+                  image={
+                    item.image ||
+                    getImagePath(`food/item.image`) ||
+                    getImagePath("food/food1.jpg")
+                  }
+                  profile={item.recipe?.profile}
+                  author={item.recipe?.username}
+                  difficulty={item.difficulty}
+                  time={item.time}
+                  category={item.category.name}
+                  onCardClick={() => nav(`/recipes/detail/${item.id}`)}
+                  onAcceptClick={(e) => {
+                    e.stopPropagation();
+                    updateStatusRecipe({
+                      id: item.id,
+                      status: {
+                        status: "accept",
+                      },
+                    });
+                  }}
+                  onDraftClick={(e) => {
+                    e.stopPropagation();
+                    updateStatusRecipe({
+                      id: item.id,
+                      status: {
+                        status: "draft",
+                      },
+                    });
+                  }}
+                  onRejectClick={(e) => {
+                    e.stopPropagation();
+                    updateStatusRecipe({
+                      id: item.id,
+                      status: {
+                        status: "reject",
+                      },
+                    });
+                  }}
+                  badge={
+                    item.status === "pending"
+                      ? "Pending"
+                      : item.status === "accept"
+                        ? "Disetujui"
+                        : item.status === "reject"
+                          ? "Ditolak"
+                          : "Draft"
+                  }
+                />
+              );
+            })
+          ) : debouncedSearchTerm ? (
+            <NoDataFound
+              type={"search"}
+              error={`Resep ${debouncedSearchTerm} tidak ditemukan`}
+            />
+          ) : (
+            <NoDataFound error={`Tidak Ada Data Ditemukan`} />
           )}
         </div>
       </main>

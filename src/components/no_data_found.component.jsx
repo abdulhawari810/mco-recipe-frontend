@@ -38,7 +38,8 @@ export default function NoDataFound({
 
       <p
         className={
-          titleClass || "text-gray-500 dark:text-orange-200 mt-4 text-xl"
+          titleClass ||
+          "text-gray-500 text-center dark:text-orange-200 mt-4 text-xl"
         }
       >
         {error}

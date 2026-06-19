@@ -27,16 +27,32 @@ export default function DasboardLayout() {
     );
   } else {
     return (
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col min-h-screen">
         <Navbar />
-        <main className="md:p-4 lg:p-4 flex gap-4 pt-20 md:pt-25 lg:pt-22.5">
-          <Menu />
-          <div className="w-full h-fit lg:h-112.5 lg:overflow-y-scroll">
+
+        <main className="flex-1 w-full min-w-0 px-4 pt-20 pb-24 md:p-4 md:pt-25 lg:pt-22.5 md:flex md:gap-4">
+          <div className="md:shrink-0">
+            <Menu />
+          </div>
+
+          <div className="w-full min-w-0 md:flex-1 lg:h-112.5 lg:overflow-y-auto">
             <Outlet />
           </div>
         </main>
+
         <Footer />
       </div>
+      // <div className="flex flex-col h-screen">
+      //   <Navbar />
+      //   <main className="md:p-4 lg:p-4 flex gap-4 pt-20 md:pt-25 lg:pt-22.5 min-w-0 overflow-hidden">
+      //     <Menu />
+
+      //     <div className="w-full min-w-0 h-112.5 lg:overflow-y-scroll">
+      //       <Outlet />
+      //     </div>
+      //   </main>
+      //   <Footer />
+      // </div>
     );
   }
 }

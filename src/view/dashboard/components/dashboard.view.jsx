@@ -19,7 +19,7 @@ export default function DashboardView({
   return (
     <>
       <main className="w-full flex flex-col gap-5">
-        <div className="p-3 sm:p-4 rounded-2xl bg-white grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="p-3 sm:p-4 rounded-2xl bg-white grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           <NavLink
             to={"/dashboard/chef/recipe"}
             className="w-full group relative min-h-35 bg-blue-700 p-4 sm:p-5 hover:scale-[1.02] transition-all duration-300 rounded-2xl text-white flex flex-col justify-between"
@@ -139,7 +139,7 @@ export default function DashboardView({
           </NavLink>
 
           <NavLink
-            className="w-full group relative min-h-35 bg-orange-700 p-4 sm:p-5 hover:scale-[1.02] transition-all duration-300 rounded-2xl text-white flex flex-col justify-between"
+            className="w-full group col-span-2 relative min-h-35 bg-orange-700 p-4 sm:p-5 hover:scale-[1.02] transition-all duration-300 rounded-2xl text-white flex flex-col justify-between"
             to={{
               pathname:
                 me?.role === "admin"
@@ -181,7 +181,7 @@ export default function DashboardView({
           </div>
 
           <div
-            className={`${recipes?.length > 0 ? "columns-2" : "flex"} mt-5 sm:flex justify-between items-start sm:flex-wrap w-full space-y-4 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8`}
+            className={`${loadingState || recipes?.length > 0 ? "columns-2" : "flex"} justify-between md:p-0 md:columns-3 items-start w-full space-y-4 md:space-y-5`}
           >
             {loadingState && !recipes ? (
               Array.from({ length: 12 }).map((_, i) => {
@@ -218,7 +218,7 @@ export default function DashboardView({
                 );
               })
             ) : (
-              <div>
+              <div className="w-full flex items-center justify-center">
                 <NoDataFound error={`Tidak Ada Data Ditemukan`} />
               </div>
             )}

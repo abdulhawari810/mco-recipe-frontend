@@ -46,7 +46,7 @@ export default function ProfileSection({ users }) {
   };
 
   useEffect(() => {
-    if (!me || !profile) return;
+    if (!me && !profile) return;
 
     setForm({
       username: me?.username || "",
@@ -67,7 +67,7 @@ export default function ProfileSection({ users }) {
           : profile?.preference_food || [],
 
       skill: profile?.skill || "beginner",
-      profile: me?.profile || preview || "",
+      profile: me?.profile || "",
     });
   }, [me, profile]);
 
@@ -108,21 +108,32 @@ export default function ProfileSection({ users }) {
 
   const handleChangeFile = (e) => {
     const selectedFile = e.target.files[0];
-    console.log("SelectedFile", selectedFile);
-    console.log("preview", preview);
 
     if (!selectedFile) return;
 
-    setPreview(URL.createObjectURL(selectedFile));
+    const objectURL = URL.createObjectURL(selectedFile);
+
+    setPreview(objectURL);
 
     const formData = new FormData();
     formData.append("avatars", selectedFile);
     setFileAvatar(formData);
-    setForm({ ...form, submit: true });
+    setForm((prev) => ({
+      ...prev,
+      profile: objectURL,
+      submit: true,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!form.phone) return toast.error("Nomor Telepon wajib diisi!");
+    if (!form.date)
+      return toast.error("Masukkan tanggal lahir terlebih dahulu!");
+    if (!form.gender)
+      return toast.error("Pilih Jenis Kelamin terlebih dahulu!");
+
     if (isProfileExist) {
       await updateProfileUsers(form);
     } else {
@@ -200,6 +211,8 @@ export default function ProfileSection({ users }) {
     production === "production"
       ? import.meta.env.VITE_BASE_API_UPLOAD
       : "http://localhost:5010";
+
+  console.log(preview);
   return (
     <>
       <form
@@ -209,7 +222,7 @@ export default function ProfileSection({ users }) {
         <div className="flex flex-col bg-white dark:bg-neutral-900 rounded-2xl shadow-md p-6 gap-5">
           {/* HEADER */}
           <div className="flex flex-col items-center gap-4">
-            {users?.profile !== "default.png" ? (
+            {users?.profile !== "default.png" || preview ? (
               <div className="relative flex items-center justify-center w-40 h-40  border-4 border-orange-300  bg-orange-300 rounded-full">
                 {loadingMe || loadingProfile ? (
                   <AnimateSpin width={10} height={10} />

@@ -35,7 +35,7 @@ const Card = ({
 
   return (
     <div
-      className="bg-white dark:bg-neutral-800 break-inside-avoid w-40 sm:w-44 md:w-40 lg:w-72 rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow relative"
+      className="bg-white dark:bg-neutral-800 break-inside-avoid rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow relative"
       onClick={onCardClick}
     >
       <div

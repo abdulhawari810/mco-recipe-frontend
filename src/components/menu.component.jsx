@@ -62,7 +62,7 @@ export default function Menu() {
   return (
     <>
       <container className="w-full lg:w-[30%] fixed bottom-0 left-0 lg:relative z-40">
-        <main className="bg-white w-full md:h-[75vh] lg:relative md:relative p-4 lg:[100vh] flex lg:flex-col md:flex-col justify-between items-center md:justify-start md:items-start lg:justify-start lg:items-start gap-2">
+        <main className="bg-white w-full rounded-xl md:h-[75vh] lg:relative md:relative p-4 lg:[100vh] flex lg:flex-col md:flex-col justify-between items-center md:justify-start md:items-start lg:justify-start lg:items-start gap-4">
           {Array.isArray(checkMenu) &&
             checkMenu.map((item, i) => {
               return (
@@ -71,8 +71,8 @@ export default function Menu() {
                   end={item.end}
                   className={({ isActive }) =>
                     isActive
-                      ? "lg:w-full md:lg:w-full w-fit h-fit flex p-4 rounded-lg bg-orange-500 text-white items-center gap-2"
-                      : "lg:w-full md:lg:w-full w-fit h-fit flex p-4 rounded-lg hover:bg-orange-500/20 text-slate-600 hover:text-black items-center gap-2"
+                      ? "lg:w-full md:lg:w-full w-fit h-fit flex p-4 md:p-3 rounded-lg bg-orange-500 text-white items-center gap-3"
+                      : "lg:w-full md:lg:w-full w-fit h-fit flex p-4 md:p-3 rounded-lg hover:bg-orange-500/10 text-slate-600 hover:text-orange-500 items-center gap-3"
                   }
                   key={i}
                 >

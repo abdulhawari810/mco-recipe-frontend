@@ -214,7 +214,7 @@ const Navbar = () => {
             )}
             {me?.role === "admin" && (
               <NavLink
-                to="/dasboard/admin"
+                to="/dashboard/admin"
                 className={({ isActive }) =>
                   isActive
                     ? "text-orange-500 bg-orange-500/10 px-3 py-2 rounded-md text-lg font-medium transition"

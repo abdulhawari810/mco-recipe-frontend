@@ -143,7 +143,7 @@ export default function RecipeChefView() {
         </div>
 
         <div
-          className={`${recipeList?.length > 0 ? "columns-2" : "flex"} mt-5 sm:flex justify-between items-start sm:flex-wrap w-full space-y-4 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8`}
+          className={`${loadingRecipesAuthor || recipeList?.length > 0 ? "columns-2" : "flex flex-col"} justify-between p-5 md:p-0 md:columns-3 items-start w-full space-y-4 md:space-y-5`}
         >
           {loadingRecipesAuthor && !recipeList ? (
             Array.from({ length: 12 }).map((_, i) => {

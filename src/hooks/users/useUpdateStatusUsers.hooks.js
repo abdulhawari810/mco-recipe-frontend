@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { updateStatusUsers } from "@/services/users.services";
 import { usersKeys } from "@/utils/queryKeys";
+import { useState } from "react";
 
 export const useUpdateStatusUsers = () => {
   const queryClient = useQueryClient();

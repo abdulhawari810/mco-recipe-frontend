@@ -3,6 +3,23 @@ import { useState, useEffect } from "react";
 import Filter from "@/components/filter.component";
 import { renderIcon } from "@/utils/icons.utils";
 import Modal from "@/components/modal.component";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+const selectTriggerClass =
+  "w-full h-12 rounded-lg border border-slate-300 bg-white px-4 text-slate-800 shadow-sm focus:ring-2 focus:ring-orange-500";
+
+const selectContentClass =
+  "rounded-lg border border-slate-200 bg-white text-slate-800 shadow-lg";
+
+const selectItemClass =
+  "cursor-pointer focus:bg-orange-50 focus:text-orange-600";
 
 export default function UsersAdminView() {
   const [formFilter, setFormFilter] = useState({
@@ -27,44 +44,58 @@ export default function UsersAdminView() {
     <>
       <main className="flex flex-col bg-white rounded-2xl w-full p-5 gap-5">
         <h1 className="font-bold text-2xl">Daftar Users</h1>
-        <div className="grid grid-cols-1 bg-white w-full">
-          <Filter
-            selectDefault={false}
-            titleSearch="Cari pengguna..."
-            onChange={(filters) => setDebouncedSearchTerm(filters.search)}
-            value={debouncedSearchTerm}
-          >
-            <select
-              onChange={(e) => setSort(e.target.value)}
-              className="outline outline-slate-400 cursor-pointer focus:outline-slate-950 not-placeholder-shown:outline-slate-950 px-3 py-2 rounded-lg"
-            >
-              <option value="">Semua</option>
-              <option value="asc">A-Z</option>
-              <option value="desc">Z-A</option>
-            </select>
-            <button
-              className="p-2 cursor-pointer outline outline-slate-400 hover:outline-slate-950  rounded-lg"
-              onClick={() => setIsModalOpen(true)}
-            >
-              {renderIcon("ListFilter", { className: "w-6 h-6" })}
-            </button>
-          </Filter>
-          <div className="flex w-full justify-end items-center gap-2">
-            <button
-              type="submit"
-              className="p-2 bg-orange-500 text-white rounded-lg"
-            >
-              Export / Import
-            </button>
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-[1fr_110px_52px_auto] md:items-center">
+          <div className="relative">
+            {renderIcon("Search", {
+              className:
+                "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400",
+            })}
+
+            <input
+              value={debouncedSearchTerm}
+              onChange={(e) => setDebouncedSearchTerm(e.target.value)}
+              placeholder="Cari pengguna..."
+              className="w-full h-12 rounded-lg border border-slate-300 pl-12 pr-4 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+            />
           </div>
+
+          <Select value={sort} onValueChange={setSort}>
+            <SelectTrigger className={selectTriggerClass}>
+              <SelectValue placeholder="Semua" />
+            </SelectTrigger>
+
+            <SelectContent className={selectContentClass}>
+              <SelectGroup>
+                <SelectLabel>Urutkan</SelectLabel>
+                <SelectItem className={selectItemClass} value="all">
+                  Semua
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="asc">
+                  A-Z
+                </SelectItem>
+                <SelectItem className={selectItemClass} value="desc">
+                  Z-A
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          <button
+            className="h-12 w-full md:w-12 flex items-center justify-center rounded-lg border border-slate-300 hover:border-orange-500 hover:text-orange-500"
+            onClick={() => setIsModalOpen(true)}
+          >
+            {renderIcon("ListFilter", { className: "w-6 h-6" })}
+          </button>
+
+          <button className="h-12 rounded-lg bg-orange-500 px-4 text-white hover:bg-orange-600">
+            Export / Import
+          </button>
         </div>
-        <div className="w-full overflow-x-scroll">
-          <TableComponent
-            search={debouncedSearchTerm}
-            sort={sort}
-            filter={onFilterChangeFinal}
-          />
-        </div>
+        <TableComponent
+          search={debouncedSearchTerm}
+          sort={sort === "all" ? "" : sort}
+          filter={onFilterChangeFinal}
+        />
       </main>
 
       <Modal
@@ -104,40 +135,76 @@ export default function UsersAdminView() {
           setIsModalOpen(false);
         }}
       >
-        <select
+        {/* SELECT ROLE */}
+        <Select
           value={formFilter?.role || ""}
-          onChange={(e) =>
-            setFormFilter({ ...formFilter, role: e.target.value })
+          onValueChange={(value) =>
+            setFormFilter({ ...formFilter, role: value })
           }
-          className="border px-3 py-2 rounded-lg"
         >
-          <option value="">Semua Peran</option>
-          <option value="admin">Admin</option>
-          <option value="users">User</option>
-          <option value="chief">Chef</option>
-        </select>
-        <select
+          <SelectTrigger className={selectTriggerClass}>
+            <SelectValue placeholder="Semua Peran" />
+          </SelectTrigger>
+          <SelectContent className={selectContentClass}>
+            <SelectItem className={selectItemClass} value="all">
+              Semua Peran
+            </SelectItem>
+            <SelectItem className={selectItemClass} value="admin">
+              Admin
+            </SelectItem>
+            <SelectItem className={selectItemClass} value="users">
+              User
+            </SelectItem>
+            <SelectItem className={selectItemClass} value="chief">
+              Chef
+            </SelectItem>
+          </SelectContent>
+        </Select>
+        {/* SELECT IS ACTIVE */}
+        <Select
           value={formFilter?.is_active || ""}
-          onChange={(e) =>
-            setFormFilter({ ...formFilter, is_active: e.target.value })
+          onValueChange={(value) =>
+            setFormFilter({ ...formFilter, is_active: value })
           }
-          className="border px-3 py-2 rounded-lg"
         >
-          <option value="">Semua Status Aktif</option>
-          <option value="active">Aktif</option>
-          <option value="in_active">Tidak Aktif</option>
-        </select>
-        <select
+          <SelectTrigger className={selectTriggerClass}>
+            <SelectValue placeholder="Semua Peran" />
+          </SelectTrigger>
+          <SelectContent className={selectContentClass}>
+            <SelectItem className={selectItemClass} value="all">
+              Semua Status
+            </SelectItem>
+            <SelectItem className={selectItemClass} value="active">
+              Aktif
+            </SelectItem>
+            <SelectItem className={selectItemClass} value="in_active">
+              Tidak Aktif
+            </SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* SELECT VERIFY  */}
+        <Select
           value={formFilter?.is_verified || ""}
-          onChange={(e) =>
-            setFormFilter({ ...formFilter, is_verified: e.target.value })
+          onValueChange={(value) =>
+            setFormFilter({ ...formFilter, is_verified: value })
           }
-          className="border px-3 py-2 rounded-lg"
         >
-          <option value="">Semua Status Verifikasi</option>
-          <option value="verified">Terverifikasi</option>
-          <option value="in_verified">Belum Terverifikasi</option>
-        </select>
+          <SelectTrigger className={selectTriggerClass}>
+            <SelectValue placeholder="Semua Peran" />
+          </SelectTrigger>
+          <SelectContent className={selectContentClass}>
+            <SelectItem className={selectItemClass} value="all">
+              Semua Status
+            </SelectItem>
+            <SelectItem className={selectItemClass} value="verified">
+              Sudah Verifikasi
+            </SelectItem>
+            <SelectItem className={selectItemClass} value="in_verified">
+              Belum Verifikasi
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </Modal>
     </>
   );

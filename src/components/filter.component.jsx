@@ -23,7 +23,7 @@ export default function Filter({
   };
 
   return (
-    <div className="flex w-full flex-col md:flex-row gap-4">
+    <div className="flex w-full flex-col px-5 md:px-0 md:flex-row gap-4">
       {/* Search */}
       <div className="relative w-full flex items-center justify-center">
         <input
@@ -31,7 +31,7 @@ export default function Filter({
           placeholder={titleSearch || "Cari resep..."}
           value={filters.search}
           onChange={(e) => handleChange("search", e.target.value)}
-          className="peer outline outline-slate-400 focus:outline-slate-950 not-placeholder-shown:outline-slate-950 px-10 py-2 rounded-lg w-full"
+          className="peer h-14 md:h-12 outline outline-slate-400 focus:outline-slate-950 not-placeholder-shown:outline-slate-950 px-10 py-2 rounded-lg w-full"
           id="search"
         />
         <label

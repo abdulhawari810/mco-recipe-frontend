@@ -127,10 +127,10 @@ export default function RecipesView() {
 
         {/* Card Grid */}
         <div
-          className="columns-2
-         mt-5  sm:flex justify-between items-start sm:flex-wrap w-full space-y-4 lg:space-y-0 md:space-y-0 sm:space-y-0 md:gap-y-4 sm:gap-y-4 lg:gap-y-8"
+          className={`${loadingRecipes || recipeList?.length > 0 ? "columns-2" : "flex"}
+        justify-center md:p-0 md:columns-3 lg:columns-4 items-start w-full space-y-4 md:space-y-5`}
         >
-          {loadingRecipes && !recipeList ? (
+          {loadingRecipes ? (
             Array.from({ length: 12 }).map((_, i) => {
               return <CardLoading key={i} />;
             })

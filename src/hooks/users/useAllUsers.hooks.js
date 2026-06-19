@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllUsers } from "@/services/users.services";
+import { usersKeys } from "@/utils/queryKeys";
 
 export const useAllUsers = ({ search, sort, filter } = {}) => {
   // 🔹 GET ALL USERS
@@ -9,7 +10,7 @@ export const useAllUsers = ({ search, sort, filter } = {}) => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["users", search, sort, filter],
+    queryKey: usersKeys.all(),
     queryFn: () =>
       getAllUsers({
         search,
