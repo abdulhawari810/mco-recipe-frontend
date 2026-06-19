@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 export const useAuth = (query) => {
   const queryClient = useQueryClient();
+  const nav = useNavigate();
 
   const isLogin = localStorage.getItem("isLogin") === "true";
 
@@ -40,6 +41,7 @@ export const useAuth = (query) => {
 
       toast.success(msg?.response?.data?.message || "Logout Berhasil");
       localStorage.setItem("isLogin", "false");
+      nav("/");
     },
 
     onError: (error) => {

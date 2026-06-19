@@ -29,7 +29,7 @@ const Card = ({
   const { me } = useAuth();
 
   let saved = null;
-  if (me?.role !== "chief") {
+  if (me?.role === "users") {
     saved = onFavouriteSaved.find((f) => f.recipeId === itemId);
   }
 
